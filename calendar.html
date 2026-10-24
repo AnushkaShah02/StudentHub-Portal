@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StudentHub - Academic Calendar</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .cal-container {
+      position: relative;
+      padding-left: 50px;
+      margin-top: 40px;
+    }
+    .cal-container::before {
+      content: '';
+      position: absolute;
+      left: 19px;
+      top: 0;
+      bottom: 0;
+      width: 40px;
+      background: rgba(109, 94, 247, 0.05);
+      border-radius: var(--radius-capsule);
+    }
+    .cal-node {
+      position: relative;
+      margin-bottom: 40px;
+      display: grid;
+      grid-template-columns: 120px 1fr;
+      gap: 30px;
+    }
+    .cal-node::before {
+      content: '';
+      position: absolute;
+      left: -41px;
+      top: 15px;
+      width: 22px;
+      height: 22px;
+      background: var(--bg-white);
+      border: 5px solid var(--primary);
+      border-radius: 50%;
+      z-index: 2;
+    }
+    .cal-date {
+      font-family: 'Poppins', sans-serif;
+      text-align: right;
+      padding-top: 12px;
+    }
+    .cal-body {
+      background: var(--bg-white);
+      border-radius: var(--radius-organic-1);
+      border: 1px solid rgba(109, 94, 247, 0.05);
+      padding: 24px;
+      box-shadow: var(--shadow-soft);
+    }
+    .cal-node:nth-child(even) .cal-body {
+      border-radius: var(--radius-organic-2);
+    }
+    @media (max-width: 768px) {
+      .cal-container { padding-left: 30px; }
+      .cal-container::before { left: 9px; width: 20px; }
+      .cal-node { grid-template-columns: 1fr; gap: 10px; }
+      .cal-node::before { left: -31px; width: 18px; height: 18px; }
+      .cal-date { text-align: left; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="bg-blob-container">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+  </div>
+
+  <header class="global-nav">
+    <div class="nav-container">
+      <div class="logo-group">
+        <div class="logo-icon"><i data-lucide="graduation-cap"></i></div>
+        <span class="logo-text">StudentHub</span>
+      </div>
+      <nav class="nav-links">
+        <a href="dashboard.html" class="nav-item"><i data-lucide="layout-dashboard" style="width: 16px;"></i> Dashboard</a>
+        <a href="profile.html" class="nav-item"><i data-lucide="user" style="width: 16px;"></i> Profile</a>
+        <a href="attendance.html" class="nav-item"><i data-lucide="activity" style="width: 16px;"></i> Attendance</a>
+        <a href="index.html" class="nav-item" style="color: #FF5A5A;"><i data-lucide="log-out" style="width: 16px;"></i> Logout</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main-wrapper">
+    <div class="page-intro">
+      <div>
+        <h1 class="font-poppins">Academic Calendar</h1>
+        <p style="color: var(--text-muted); margin-top: 5px;">Your semester roadmap connected in real-time</p>
+      </div>
+    </div>
+
+    <section class="cal-container">
+      <article class="cal-node">
+        <div class="cal-date">
+          <span style="font-weight: 700; color: var(--primary); font-size: 1.1rem;">AUG 12</span>
+          <p style="font-size: 0.8rem; color: var(--text-muted);">Semester Start</p>
+        </div>
+        <div class="cal-body">
+          <h4 class="font-poppins">Commencement of Semester 3 CSE Classes</h4>
+          <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 4px;">Beginning of dynamic academic sessions for current Computer Science & Engineering profiles.</p>
+        </div>
+      </article>
+
+      <article class="cal-node">
+        <div class="cal-date">
+          <span style="font-weight: 700; color: var(--primary); font-size: 1.1rem;">SEP 18</span>
+          <p style="font-size: 0.8rem; color: var(--text-muted);">Evaluation</p>
+        </div>
+        <div class="cal-body">
+          <h4 class="font-poppins">Mid-Semester Theory Assessments</h4>
+          <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 4px;">Mid-semester exams evaluating core topics in computer systems and mathematical algorithms.</p>
+        </div>
+      </article>
+
+      <article class="cal-node">
+        <div class="cal-date">
+          <span style="font-weight: 700; color: var(--primary); font-size: 1.1rem;">OCT 05</span>
+          <p style="font-size: 0.8rem; color: var(--text-muted);">Exhibition</p>
+        </div>
+        <div class="cal-body">
+          <h4 class="font-poppins">Annual Tech Symposium (Innovate CSE)</h4>
+          <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 4px;">Project showcase and algorithm evaluation labs for CSE branches.</p>
+        </div>
+      </article>
+
+      <article class="cal-node">
+        <div class="cal-date">
+          <span style="font-weight: 700; color: var(--primary); font-size: 1.1rem;">NOV 24</span>
+          <p style="font-size: 0.8rem; color: var(--text-muted);">Term End</p>
+        </div>
+        <div class="cal-body">
+          <h4 class="font-poppins">End Semester Examinations</h4>
+          <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 4px;">Final theory and laboratory practical assessment cycle.</p>
+        </div>
+      </article>
+    </section>
+
+    <footer style="text-align: center; margin-top: 60px; color: var(--text-muted); font-size: 0.85rem;">
+      <p>&copy; 2026 StudentHub. All calendar schedules are subject to administrative adjustments.</p>
+    </footer>
+  </main>
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="script.js"></script>
+</body>
+</html>

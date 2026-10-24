@@ -1,0 +1,17 @@
+[
+  {"id": 1, "name": "Anushka Shah", "points": 980, "cgpa": 9.20, "attendance": 88.5, "department": "CSE"},
+  {"id": 2, "name": "Shrusti Chavada", "points": 920, "cgpa": 8.95, "attendance": 82.0, "department": "CSE"},
+  {"id": 3, "name": "Bhavyaa Patel", "points": 850, "cgpa": 8.70, "attendance": 78.5, "department": "CSE"},
+  {"id": 4, "name": "Pooja Patel", "points": 810, "cgpa": 9.12, "attendance": 91.0, "department": "IT"},
+  {"id": 5, "name": "Kabir Mehta", "points": 790, "cgpa": 8.40, "attendance": 76.0, "department": "CSE"},
+  {"id": 6, "name": "Deepika Sen", "points": 760, "cgpa": 9.50, "attendance": 95.0, "department": "ECE"},
+  {"id": 7, "name": "Arjun Sharma", "points": 720, "cgpa": 7.80, "attendance": 75.5, "department": "CSE"},
+  {"id": 8, "name": "Sneha Reddy", "points": 690, "cgpa": 8.65, "attendance": 84.0, "department": "CSE"},
+  {"id": 9, "name": "Yash Gupta", "points": 650, "cgpa": 8.10, "attendance": 80.0, "department": "IT"},
+  {"id": 10, "name": "Divya Joshi", "points": 620, "cgpa": 9.05, "attendance": 89.0, "department": "CSE"},
+  {"id": 11, "name": "Aryan Verma", "points": 590, "cgpa": 7.50, "attendance": 75.0, "department": "CSE"},
+  {"id": 12, "name": "Ishita Saxena", "points": 570, "cgpa": 8.80, "attendance": 85.0, "department": "CSE"},
+  {"id": 13, "name": "Kunal Roy", "points": 550, "cgpa": 8.25, "attendance": 77.0, "department": "IT"},
+  {"id": 14, "name": "Tanvi Rao", "points": 520, "cgpa": 9.35, "attendance": 93.0, "department": "CSE"},
+  {"id": 15, "name": "Nehal Shah", "points": 490, "cgpa": 7.90, "attendance": 76.5, "department": "ECE"}
+]

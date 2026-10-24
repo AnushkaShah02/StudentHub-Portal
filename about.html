@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StudentHub - About System</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* Custom CSS Grid and Flexbox layouts for the About Page */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1.8fr 1.2fr;
+      gap: 40px;
+      margin-top: 20px;
+    }
+    .tech-stack-flex {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-top: 20px;
+    }
+    .tech-pill {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--bg-light);
+      padding: 10px 18px;
+      border-radius: var(--radius-capsule);
+      border: 1px solid var(--lavender);
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+    @media (max-width: 992px) {
+      .about-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Blob Background -->
+  <div class="bg-blob-container">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+  </div>
+
+  <!-- Reusable Header (Injected dynamically via script.js) -->
+  <header class="global-nav"></header>
+
+  <main class="main-wrapper">
+    <div class="page-intro">
+      <div>
+        <h1 class="font-poppins">About StudentHub</h1>
+        <p style="color: var(--text-muted); margin-top: 5px;">The architecture, tech stack, and mission behind our portal</p>
+      </div>
+    </div>
+
+    <div class="about-grid">
+      <!-- Main Column: Mission & Features -->
+      <section class="organic-card organic-card-1" style="padding: 40px;">
+        <h3 class="font-poppins" style="color: var(--primary); margin-bottom: 15px;">System Purpose & Design Mission</h3>
+        <p style="color: var(--text-muted); margin-bottom: 20px; line-height: 1.7;">
+          StudentHub is a unified academic interface designed specifically for computer science and engineering profiles. By consolidating schedules, attendance tracking, grades, and campus events into a single digital entry point, the platform eliminates academic friction and provides students with clear visual indicators of their academic standing.
+        </p>
+        
+        <h4 class="font-poppins" style="margin-bottom: 15px;">Core Layout Stack</h4>
+        <p style="color: var(--text-muted); line-height: 1.7;">
+          The interface leverages custom CSS Grid systems for structural page division alongside Flexbox for components like navigation blocks and button alignments. This ensures that the layout is responsive across mobile, tablet, and desktop screens.
+        </p>
+
+        <div class="tech-stack-flex">
+          <div class="tech-pill"><i data-lucide="layout-grid" style="color: var(--primary);"></i> CSS Grid</div>
+          <div class="tech-pill"><i data-lucide="columns-2" style="color: var(--primary);"></i> Flexbox Alignment</div>
+          <div class="tech-pill"><i data-lucide="code-2" style="color: var(--primary);"></i> Semantic HTML5</div>
+          <div class="tech-pill"><i data-lucide="cpu" style="color: var(--primary);"></i> Vanilla JS Dynamic Engine</div>
+        </div>
+      </section>
+
+      <!-- Sidebar Column: Compliance & Developer Details -->
+      <aside style="display: flex; flex-direction: column; gap: 30px;">
+        <!-- University Details -->
+        <article class="organic-card organic-card-2" style="padding: 30px;">
+          <h4 class="font-poppins" style="margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+            <i data-lucide="graduation-cap" style="color: var(--primary);"></i> Affiliation
+          </h4>
+          <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 15px;">
+            Developed for Charotar University of Science and Technology (CHARUSAT) to fulfill CSE branch curriculum exercises.
+          </p>
+          <span style="font-size: 0.8rem; font-weight: 700; color: var(--primary);">CAMPUS COMPLIANT</span>
+        </article>
+
+        <!-- Technical Specs -->
+        <article class="organic-card organic-card-1" style="padding: 30px;">
+          <h4 class="font-poppins" style="margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+            <i data-lucide="shield-check" style="color: var(--primary);"></i> Verification
+          </h4>
+          <ul style="font-size: 0.85rem; color: var(--text-muted); list-style-type: none; padding-left: 0; display: flex; flex-direction: column; gap: 10px;">
+            <li><i data-lucide="check" style="width: 14px; vertical-align: middle; color: var(--success);"></i> Mobile-first Responsiveness</li>
+            <li><i data-lucide="check" style="width: 14px; vertical-align: middle; color: var(--success);"></i> High Contrast Text</li>
+            <li><i data-lucide="check" style="width: 14px; vertical-align: middle; color: var(--success);"></i> Semantic and Validated HTML</li>
+          </ul>
+        </article>
+      </aside>
+    </div>
+
+    <!-- Reusable Footer (Injected dynamically via script.js) -->
+    <footer class="global-footer" style="text-align: center; margin-top: 60px;"></footer>
+  </main>
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="script.js"></script>
+</body>
+</html>

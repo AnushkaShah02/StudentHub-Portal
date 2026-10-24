@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StudentHub - Register</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .register-split {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      min-height: 100vh;
+    }
+    .banner-side {
+      background: var(--primary);
+      color: var(--bg-white);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 80px;
+      border-radius: 0 40px 40px 0;
+    }
+    .form-side {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 60px 80px;
+      background: var(--bg-white);
+    }
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-bottom: 25px;
+    }
+    .input-wrapper {
+      position: relative;
+    }
+    .input-field {
+      width: 100%;
+      padding: 14px 20px 14px 45px;
+      border: 1px solid var(--lavender);
+      border-radius: var(--radius-organic-1);
+      outline: none;
+      font-size: 0.9rem;
+      transition: var(--transition);
+    }
+    .input-field:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(109, 94, 247, 0.1);
+    }
+    .input-icon {
+      position: absolute;
+      left: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+      width: 18px;
+    }
+    @media (max-width: 992px) {
+      .register-split { grid-template-columns: 1fr; }
+      .banner-side { display: none; }
+      .form-side { padding: 40px 20px; }
+      .form-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <main class="register-split">
+    <aside class="banner-side">
+      <h2 class="font-poppins" style="font-size: 2.5rem; margin-bottom: 20px; line-height: 1.2;">Begin Your<br>Academic Journey</h2>
+      <p style="opacity: 0.8; margin-bottom: 40px;">Create your student account to tap directly into schedules, check dynamic GPA charts, and access course files inside a simplified student landscape.</p>
+      
+      <section style="background: rgba(255, 255, 255, 0.15); padding: 30px; border-radius: var(--radius-organic-2);">
+        <h4 style="margin-bottom: 10px;">Already Registered?</h4>
+        <p style="font-size: 0.85rem; opacity: 0.9; margin-bottom: 20px;">If you already possess login details for your semester account, click the link below to enter.</p>
+        <a href="index.html" class="btn-secondary" style="background: var(--bg-white); color: var(--primary);">Go to Login</a>
+      </section>
+    </aside>
+
+    <section class="form-side">
+      <div style="max-width: 600px; width:100%; margin: 0 auto;">
+        <h2 class="font-poppins" style="font-size: 2rem; margin-bottom: 8px;">Create Account</h2>
+        <p style="color: var(--text-muted); margin-bottom: 35px;">Complete the information below to register your semester profile.</p>
+
+        <form action="dashboard.html" method="GET">
+          <div class="form-grid">
+            <div class="input-wrapper">
+              <i data-lucide="user" class="input-icon"></i>
+              <input type="text" class="input-field" placeholder="First Name" required value="Anushka">
+            </div>
+            <div class="input-wrapper">
+              <i data-lucide="user" class="input-icon"></i>
+              <input type="text" class="input-field" placeholder="Last Name" required value="Shah">
+            </div>
+            <div class="input-wrapper">
+              <i data-lucide="hash" class="input-icon"></i>
+              <input type="text" class="input-field" placeholder="Enrollment No." required value="25CS097">
+            </div>
+            <div class="input-wrapper">
+              <i data-lucide="layers" class="input-icon"></i>
+              <input type="text" class="input-field" placeholder="Department / Semester" required value="CSE 3rd Sem">
+            </div>
+            <div class="input-wrapper" style="grid-column: span 2;">
+              <i data-lucide="mail" class="input-icon"></i>
+              <input type="email" class="input-field" placeholder="College Email ID" required value="anushka.shah@student.edu">
+            </div>
+            <div class="input-wrapper">
+              <i data-lucide="lock" class="input-icon"></i>
+              <input type="password" class="input-field" placeholder="Create Password" required>
+            </div>
+            <div class="input-wrapper">
+              <i data-lucide="lock" class="input-icon"></i>
+              <input type="password" class="input-field" placeholder="Confirm Password" required>
+            </div>
+          </div>
+
+          <label style="display: flex; align-items: flex-start; gap: 10px; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 30px; cursor: pointer;">
+            <input type="checkbox" required style="accent-color: var(--primary); margin-top: 3px;">
+            <span>I agree to the college portal terms of service and certify that my details are accurate.</span>
+          </label>
+
+          <button type="submit" class="btn-primary" style="width: 100%; justify-content: center; padding: 14px;">
+            Create Profile <i data-lucide="user-plus"></i>
+          </button>
+        </form>
+      </div>
+
+      <footer style="margin-top: 40px; font-size: 0.8rem; color: var(--text-muted); text-align: center;">
+        <p>&copy; 2026 StudentHub. Secure Enrollment Gateway.</p>
+      </footer>
+    </section>
+  </main>
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="script.js"></script>
+</body>
+</html>

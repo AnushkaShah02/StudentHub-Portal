@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StudentHub - Study Materials</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .material-card {
+      background: var(--bg-white);
+      border-radius: var(--radius-organic-1);
+      border: 1px solid rgba(109, 94, 247, 0.05);
+      padding: 30px;
+      box-shadow: var(--shadow-soft);
+    }
+    .material-card:nth-child(even) {
+      border-radius: var(--radius-organic-2);
+    }
+    .resource-link {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 16px;
+      background: var(--bg-light);
+      border-radius: var(--radius-capsule);
+      margin-top: 12px;
+      transition: var(--transition);
+    }
+    .resource-link:hover {
+      background: var(--primary-light);
+      color: var(--primary);
+      transform: translateX(4px);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="bg-blob-container">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+  </div>
+
+  <header class="global-nav">
+    <div class="nav-container">
+      <div class="logo-group">
+        <div class="logo-icon"><i data-lucide="graduation-cap"></i></div>
+        <span class="logo-text">StudentHub</span>
+      </div>
+      <nav class="nav-links">
+        <a href="dashboard.html" class="nav-item"><i data-lucide="layout-dashboard" style="width: 16px;"></i> Dashboard</a>
+        <a href="profile.html" class="nav-item"><i data-lucide="user" style="width: 16px;"></i> Profile</a>
+        <a href="attendance.html" class="nav-item"><i data-lucide="activity" style="width: 16px;"></i> Attendance</a>
+        <a href="index.html" class="nav-item" style="color: #FF5A5A;"><i data-lucide="log-out" style="width: 16px;"></i> Logout</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main-wrapper">
+    <div class="page-intro">
+      <div>
+        <h1 class="font-poppins">Study Materials</h1>
+        <p style="color: var(--text-muted); margin-top: 5px;">Access learning guides, blueprints, and code assets</p>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <!-- FCN -->
+      <article class="material-card">
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 20px;">
+          <div style="background: var(--primary-light); color: var(--primary); padding: 10px; border-radius: var(--radius-blob);">
+            <i data-lucide="network"></i>
+          </div>
+          <h3 class="font-poppins" style="font-size: 1.15rem;">Fundamentals of Computer Networking</h3>
+        </div>
+        <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 15px;">Focuses on TCP/IP structural layouts, packet transfer architectures, and IP routing schemas.</p>
+        <div>
+          <a href="#" class="resource-link">
+            <span style="font-size: 0.85rem; font-weight: 500;"><i data-lucide="file-text" style="width:14px; margin-right: 6px;"></i> Lecture_Notes_IPSubnets.pdf</span>
+            <i data-lucide="download" style="width: 16px;"></i>
+          </a>
+          <a href="#" class="resource-link">
+            <span style="font-size: 0.85rem; font-weight: 500;"><i data-lucide="file-text" style="width:14px; margin-right: 6px;"></i> OSI_Model_Reference_Chart.pdf</span>
+            <i data-lucide="download" style="width: 16px;"></i>
+          </a>
+        </div>
+      </article>
+
+      <!-- WDF -->
+      <article class="material-card">
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 20px;">
+          <div style="background: var(--primary-light); color: var(--primary); padding: 10px; border-radius: var(--radius-blob);">
+            <i data-lucide="code-2"></i>
+          </div>
+          <h3 class="font-poppins" style="font-size: 1.15rem;">Web Development Frameworks</h3>
+        </div>
+        <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 15px;">Working with modern vanilla architectures, declarative styles, templates, and script bindings.</p>
+        <div>
+          <a href="#" class="resource-link">
+            <span style="font-size: 0.85rem; font-weight: 500;"><i data-lucide="file-code" style="width:14px; margin-right: 6px;"></i> Flexbox_and_Grid_Lab_Template.zip</span>
+            <i data-lucide="download" style="width: 16px;"></i>
+          </a>
+          <a href="#" class="resource-link">
+            <span style="font-size: 0.85rem; font-weight: 500;"><i data-lucide="file-text" style="width:14px; margin-right: 6px;"></i> Syllabus_and_Project_Rubric.pdf</span>
+            <i data-lucide="download" style="width: 16px;"></i>
+          </a>
+        </div>
+      </article>
+
+      <!-- OOP Java -->
+      <article class="material-card">
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 20px;">
+          <div style="background: var(--primary-light); color: var(--primary); padding: 10px; border-radius: var(--radius-blob);">
+            <i data-lucide="coffee"></i>
+          </div>
+          <h3 class="font-poppins" style="font-size: 1.15rem;">Object Oriented Programming (Java)</h3>
+        </div>
+        <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 15px;">Deep dive into classes, inheritance hierarchies, abstract methods, dynamic bindings, and Java standard library.</p>
+        <div>
+          <a href="#" class="resource-link">
+            <span style="font-size: 0.85rem; font-weight: 500;"><i data-lucide="file-code" style="width:14px; margin-right: 6px;"></i> OOP_Polymorphism_LabCode.java</span>
+            <i data-lucide="download" style="width: 16px;"></i>
+          </a>
+        </div>
+      </article>
+
+      <!-- DSA -->
+      <article class="material-card">
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 20px;">
+          <div style="background: var(--primary-light); color: var(--primary); padding: 10px; border-radius: var(--radius-blob);">
+            <i data-lucide="binary"></i>
+          </div>
+          <h3 class="font-poppins" style="font-size: 1.15rem;">Data Structure and Algorithm</h3>
+        </div>
+        <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 15px;">Tracking space-time complexities, linked structures, tree structures, recursive formulations, and search tracks.</p>
+        <div>
+          <a href="#" class="resource-link">
+            <span style="font-size: 0.85rem; font-weight: 500;"><i data-lucide="file-text" style="width:14px; margin-right: 6px;"></i> Red_Black_Trees_Guide.pdf</span>
+            <i data-lucide="download" style="width: 16px;"></i>
+          </a>
+        </div>
+      </article>
+    </div>
+
+    <footer style="text-align: center; margin-top: 60px; color: var(--text-muted); font-size: 0.85rem;">
+      <p>&copy; 2026 StudentHub. Academic and laboratory reading resources.</p>
+    </footer>
+  </main>
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="script.js"></script>
+</body>
+</html>

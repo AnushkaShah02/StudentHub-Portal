@@ -1,0 +1,17 @@
+[
+  {"id": 1, "question": "How is aggregate attendance verified?", "answer": "Your aggregate attendance is calculated from the attendance records provided by the respective subject teachers. Ensure any medical certificates are verified by the academic block.", "category": "Academic"},
+  {"id": 2, "question": "Where can I check exam grade points?", "answer": "Grade points and official semester examination results can be viewed directly under the Results section of the StudentHub portal.", "category": "Examinations"},
+  {"id": 3, "question": "How do I update my profile details?", "answer": "To edit personal metrics, address, or profile details, visit the Profile tab and submit an update request with supporting documents.", "category": "Profile"},
+  {"id": 4, "question": "What is the procedure for fee ledger disputes?", "answer": "All payment disputes can be directed to the Helpdesk by submitting a query ticket along with the online receipt block reference.", "category": "Fees"},
+  {"id": 5, "question": "Where are dynamic events registered?", "answer": "Dynamic technical workshops, hackathons, and symposiums can be discovered and registered on the Events board page.", "category": "Events"},
+  {"id": 6, "question": "What are the rules for the Innovate CSE Expo?", "answer": "Students must submit project abstracts featuring responsive CSS Grid layout rules to their coordinator before the designated Friday deadline.", "category": "Events"},
+  {"id": 7, "question": "What happens if my attendance drops below 75%?", "answer": "Students dropping below 75% aggregate attendance risk losing hall-ticket verification permission for terminal tests.", "category": "Academic"},
+  {"id": 8, "question": "How can I request a physical library book?", "answer": "Physical academic study files and text reference items can be reserved online via the Study Files tab or at the central building library.", "category": "Academic"},
+  {"id": 9, "question": "Are mid-semester practical file submissions mandatory?", "answer": "Yes. Complete records of laboratory sheets and assignments must be reviewed and signed by practical course mentors.", "category": "Examinations"},
+  {"id": 10, "question": "How long does support response take?", "answer": "Most helpdesk ticket questions are evaluated by administrative teams within 24 to 48 operational office hours.", "category": "Support"},
+  {"id": 11, "question": "Where can I get study guides for FCN?", "answer": "Fundamental of Computer Networking notes are available under the Study Files sub-page compiled directly by department professors.", "category": "Academic"},
+  {"id": 12, "question": "Can I volunteer for upcoming events?", "answer": "Yes. Students are welcome to register as organizers or event coordinators by sending an application through the Support panel.", "category": "Events"},
+  {"id": 13, "question": "How do I switch the visual theme?", "answer": "The visual theme can be toggled between Light and Dark mode using the circular Sun/Moon button on the top right header controls.", "category": "System"},
+  {"id": 14, "question": "What technologies are tested in WDF?", "answer": "Web Development Frameworks focus heavily on HTML5 structures, modern layout engines (CSS Grid/Flex), and vanilla interactive JavaScript.", "category": "Academic"},
+  {"id": 15, "question": "Is StudentHub affiliated to CHARUSAT?", "answer": "Yes. The system is designed to comply with standard academic data registries affiliated directly with the CHARUSAT CSE branch.", "category": "System"}
+]

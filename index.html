@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StudentHub - CHARUSAT Login</title>
+  <link rel="stylesheet" href="style.css">
+  
+  <!-- Importing Playfair Display for the university header and Outfit for subheaders -->
+  <!-- Dynamic, Responsive, & Compact Styling for Login -->
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,600;0,700;1,500&display=swap');
+
+    .login-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      position: relative;
+      padding: 15px;
+    }
+
+    .university-header {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      font-size: 1.6rem; /* Scaled down for screen clearance */
+      color: var(--primary-dark);
+      text-align: center;
+      line-height: 1.25;
+      margin-bottom: 4px;
+    }
+
+    .portal-subtitle {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 400;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      text-align: center;
+      margin-bottom: 20px; /* Reduced to pull inputs up */
+      letter-spacing: 0.5px;
+    }
+
+    .login-card {
+      background: var(--bg-white);
+      max-width: 420px; /* Marginally narrower */
+      width: 100%;
+      padding: 30px 25px; /* Thinner padding for vertical space save */
+      border-radius: var(--radius-organic-1);
+      border: 1px solid rgba(109, 94, 247, 0.1);
+      box-shadow: var(--shadow-hover);
+      position: relative;
+      z-index: 10;
+    }
+
+    /* Keep the dashed design trace */
+    .login-card::after {
+      content: '';
+      position: absolute;
+      top: -5px;
+      left: -5px;
+      right: -5px;
+      bottom: -5px;
+      border: 1.5px dashed var(--primary-light);
+      border-radius: calc(var(--radius-organic-1) + 4px);
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    .form-group {
+      margin-bottom: 16px; /* Tightened form spacing */
+      position: relative;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 12px 15px 12px 45px; /* Compact input height */
+      border: 1px solid var(--lavender);
+      border-radius: var(--radius-capsule);
+      outline: none;
+      font-size: 0.9rem;
+      font-family: 'Inter', sans-serif;
+      transition: var(--transition);
+      background: var(--bg-light);
+    }
+
+    .form-input:focus {
+      border-color: var(--primary);
+      background: var(--bg-white);
+      box-shadow: 0 0 0 4px rgba(109, 94, 247, 0.1);
+    }
+
+    .form-icon {
+      position: absolute;
+      left: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+    }
+
+    .logo-badge {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 15px; /* Reduced gap */
+    }
+
+    .logo-badge-icon {
+      background: var(--primary-light);
+      color: var(--primary);
+      padding: 10px;
+      border-radius: var(--radius-blob);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Dynamic Slow Background Blobs -->
+  <div class="bg-blob-container">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+  </div>
+
+  <main class="login-container">
+    <section class="login-card">
+      
+      <!-- Academic Icon Badge -->
+      <div class="logo-badge">
+        <div class="logo-badge-icon">
+          <i data-lucide="graduation-cap" style="width: 28px; height: 28px;"></i>
+        </div>
+      </div>
+
+      <!-- Specialized Header -->
+      <h1 class="university-header">Welcome to CHARUSAT's Student Portal</h1>
+      <p class="portal-subtitle">Secure Academic Gatekeeper</p>
+      
+      <form action="dashboard.html" method="GET">
+        <div class="form-group">
+          <i data-lucide="mail" class="form-icon"></i>
+          <input type="email" class="form-input" placeholder="Your College Email" required value="anushka.shah@student.edu">
+        </div>
+        
+        <div class="form-group">
+          <i data-lucide="lock" class="form-icon"></i>
+          <input type="password" class="form-input" placeholder="Password" required value="••••••••">
+        </div>
+        
+        <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; margin-bottom: 30px;">
+          <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; color: var(--text-muted); font-family: 'Outfit', sans-serif;">
+            <input type="checkbox" checked style="accent-color: var(--primary);"> Keep me logged in
+          </label>
+          <a href="#" style="color: var(--primary); font-weight: 500; font-family: 'Outfit', sans-serif;">Forgot Password?</a>
+        </div>
+        
+        <button type="submit" class="btn-primary" style="width: 100%; justify-content: center; padding: 16px; font-family: 'Outfit', sans-serif;">
+          Enter Portal <i data-lucide="arrow-right" style="width: 18px; height: 18px;"></i>
+        </button>
+      </form>
+      
+      <p style="text-align: center; margin-top: 30px; font-size: 0.9rem; color: var(--text-muted); font-family: 'Outfit', sans-serif;">
+        New student? <a href="register.html" style="color: var(--primary); font-weight: 600;">Create an account</a>
+      </p>
+    </section>
+  </main>
+
+  <footer style="position: absolute; bottom: 20px; width: 100%; text-align: center; color: var(--text-muted); font-size: 0.8rem; font-family: 'Outfit', sans-serif; pointer-events: none;">
+    <p>&copy; 2026 Charotar University of Science and Technology (CHARUSAT).</p>
+  </footer>
+
+  <!-- Lucide & Scripts -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="script.js"></script>
+</body>
+</html>

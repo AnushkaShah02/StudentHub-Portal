@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StudentHub - Campus Events</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Blob Background -->
+  <div class="bg-blob-container">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+  </div>
+
+  <!-- Reusable Header (Injected dynamically via script.js) -->
+  <header class="global-nav"></header>
+
+  <main class="main-wrapper">
+    <div class="page-intro" style="margin-bottom: 25px;">
+      <div>
+        <h1 class="font-poppins">Campus Happenings</h1>
+        <p style="color: var(--text-muted); margin-top: 5px;">Discover dynamic technical workshops, Hackathons, and exhibitions.</p>
+      </div>
+    </div>
+
+    <!-- Advanced Interactive Control panel (Search, Filters, Dependent Dropdowns, Sort) -->
+    <section class="organic-card organic-card-1" style="padding: 20px; margin-bottom: 25px;">
+      <h3 class="font-poppins" style="margin-bottom: 15px; font-size: 1.15rem; color: var(--primary); display: flex; align-items: center; gap: 8px;">
+        <i data-lucide="sliders-horizontal"></i> Filters & Venue Search Panel
+      </h3>
+      
+      <div class="filters-grid">
+        <div class="filter-group">
+          <label for="search-input">Search Events</label>
+          <input type="text" id="search-input" placeholder="Search by title, description, or room...">
+        </div>
+        
+        <div class="filter-group">
+          <label for="type-filter">Category Type</label>
+          <select id="type-filter">
+            <option value="ALL">All Categories</option>
+            <option value="HACKATHON">Hackathons</option>
+            <option value="WORKSHOP">Workshops</option>
+            <option value="SEMINAR">Seminars</option>
+            <option value="SYMPOSIUM">Symposiums</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label for="sort-select">Sort Layout</label>
+          <select id="sort-select">
+            <option value="date-asc">Date (Earliest First)</option>
+            <option value="date-desc">Date (Latest First)</option>
+            <option value="registrations-desc">Most Registered</option>
+            <option value="title-asc">Title (A to Z)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Country-State-City Dependent Dropdowns (Intermediate Extension) -->
+      <div class="dependent-dropdowns-row">
+        <div class="filter-group">
+          <label for="country-select">Country</label>
+          <select id="country-select">
+            <option value="ALL">All Countries</option>
+          </select>
+        </div>
+        
+        <div class="filter-group">
+          <label for="state-select">State</label>
+          <select id="state-select" disabled>
+            <option value="ALL">All States</option>
+          </select>
+        </div>
+        
+        <div class="filter-group">
+          <label for="city-select">City</label>
+          <select id="city-select" disabled>
+            <option value="ALL">All Cities</option>
+          </select>
+        </div>
+      </div>
+    </section>
+
+    <!-- Asymmetric CSS Grid Layout Structure -->
+    <section class="events-layout-grid">
+      
+      <!-- Main Dynamic Content Area (Grid) -->
+      <div class="events-main-section">
+        <h3 class="font-poppins" style="margin-bottom: 20px;">Active Event Board</h3>
+        
+        <!-- Loading Spinner State Indicator -->
+        <div id="events-loading" style="text-align: center; padding: 40px; display: none;">
+          <i data-lucide="loader" class="spin-animation" style="width: 40px; height: 40px; color: var(--primary);"></i>
+          <p style="margin-top: 10px; color: var(--text-muted); font-weight: 500;">Retrieving dynamic events ledger...</p>
+        </div>
+
+        <!-- Failure State Indicator -->
+        <div id="events-error" style="text-align: center; padding: 30px; display: none; background: rgba(255, 90, 90, 0.1); border: 1px solid #FF5A5A; border-radius: 16px;">
+          <i data-lucide="alert-triangle" style="width: 36px; height: 36px; color: #FF5A5A;"></i>
+          <p style="margin-top: 10px; color: #FF5A5A; font-weight: 600;">Could not establish connection to the events database.</p>
+          <button class="btn-primary" id="retry-events-btn" style="margin-top: 12px; background: #FF5A5A;">Retry Connection</button>
+        </div>
+
+        <!-- Target Dynamic Event Grid -->
+        <div class="events-card-grid" id="events-dynamic-grid"></div>
+
+        <!-- Pagination Controls -->
+        <div class="pagination-container">
+          <button class="slider-btn" id="prev-page" aria-label="Previous Page">&larr;</button>
+          <span id="page-indicator" style="font-size: 0.88rem; font-weight: 600;">Page 1 of 1</span>
+          <button class="slider-btn" id="next-page" aria-label="Next Page">&rarr;</button>
+        </div>
+      </div>
+
+      <!-- Sidebar Section -->
+      <aside class="events-sidebar-section">
+        <div class="organic-card organic-card-2" style="padding: 25px; height: fit-content; margin-bottom: 25px;">
+          <h4 class="font-poppins" style="margin-bottom: 12px;"><i data-lucide="award" style="vertical-align: middle; margin-right: 6px; color: var(--primary);"></i> Leaderboard</h4>
+          <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 15px;">Students earning maximum activity points across current CSE challenges.</p>
+          
+          <!-- Dynamic Leaderboard Target -->
+          <ol id="dynamic-leaderboard" style="font-size: 0.85rem; padding-left: 20px; line-height: 2;">
+            <div style="text-align: center; padding: 10px;">
+              <i data-lucide="loader" class="spin-animation" style="width:16px;"></i>
+            </div>
+          </ol>
+        </div>
+
+        <div class="organic-card organic-card-1" style="padding: 25px; height: fit-content;">
+          <h4 class="font-poppins" style="margin-bottom: 12px;">Need Organizer Access?</h4>
+          <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 15px;">If you are hosting a club event, submit credentials to get your poster featured.</p>
+          <a href="contact.html" class="btn-primary" style="font-size: 0.8rem; padding: 10px 18px; width: 100%; justify-content: center;">Contact Admin <i data-lucide="mail"></i></a>
+        </div>
+      </aside>
+
+    </section>
+
+    <!-- Reusable Footer -->
+    <footer class="global-footer" style="text-align: center; margin-top: 60px; color: var(--text-muted); font-size: 0.85rem;"></footer>
+  </main>
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="script.js"></script>
+</body>
+</html>

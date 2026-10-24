@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StudentHub - Student Identity</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* Organic Banner Design */
+    .profile-banner-card {
+      background: var(--bg-white);
+      border-radius: var(--radius-organic-1);
+      border: 1px solid rgba(109, 94, 247, 0.1);
+      box-shadow: var(--shadow-soft);
+      overflow: hidden;
+      margin-bottom: 40px;
+    }
+    .banner-graphic {
+      height: 180px;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+      position: relative;
+    }
+    .banner-wave {
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 100%;
+      height: 40px;
+      fill: var(--bg-white);
+    }
+    .profile-hero {
+      padding: 0 40px 40px;
+      display: flex;
+      align-items: flex-end;
+      gap: 30px;
+      margin-top: -80px;
+      position: relative;
+      z-index: 2;
+    }
+    .avatar-wrapper {
+      width: 140px;
+      height: 140px;
+      border-radius: var(--radius-blob);
+      background: var(--bg-white);
+      padding: 6px;
+      box-shadow: var(--shadow-soft);
+    }
+    .avatar-image {
+      width: 100%;
+      height: 100%;
+      border-radius: var(--radius-blob);
+      background: var(--primary-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--primary);
+      border: 2px dashed var(--primary);
+    }
+    .hero-meta {
+      margin-bottom: 10px;
+    }
+
+    /* Info Block Grid */
+    .info-group-box {
+      padding: 24px;
+      background: var(--bg-white);
+      border: 1px solid rgba(109, 94, 247, 0.05);
+      box-shadow: var(--shadow-soft);
+      border-radius: var(--radius-organic-2);
+      transition: var(--transition);
+    }
+    .info-group-box:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-hover);
+    }
+    .info-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+    .info-val {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text-main);
+      margin-top: 4px;
+    }
+
+    /* Skills capsules */
+    .skill-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 15px;
+    }
+    .skill-pill {
+      background: var(--primary-light);
+      color: var(--primary);
+      padding: 6px 14px;
+      border-radius: var(--radius-capsule);
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Blob Background -->
+  <div class="bg-blob-container">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+  </div>
+
+  <header class="global-nav"></header>
+
+  <main class="main-wrapper">
+    <section class="profile-banner-card">
+      <div class="banner-graphic">
+        <svg class="banner-wave" viewBox="0 0 1440 320" preserveAspectRatio="none">
+          <path d="M0,224L120,202.7C240,181,480,139,720,138.7C960,139,1200,181,1320,202.7L1440,224L1440,320L1320,320C1200,320,960,320,720,320C480,320,240,320,120,320L0,320Z"></path>
+        </svg>
+      </div>
+      <div class="profile-hero">
+        <div class="avatar-wrapper">
+          <div class="avatar-image">AS</div>
+        </div>
+        <div class="hero-meta">
+          <h2 class="font-poppins" style="font-size: 2rem; margin-bottom: 4px;">ANUSHKA SHAH</h2>
+          <p style="color: var(--text-muted); font-size: 0.95rem; display: flex; align-items: center; gap: 8px;">
+            <i data-lucide="terminal" style="width: 16px; color: var(--primary);"></i> CSE Student — Semester 3
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="grid-3" style="margin-bottom: 40px;">
+      <div class="info-group-box">
+        <span class="info-label">Enrollment ID</span>
+        <p class="info-val">25CS097</p>
+      </div>
+      <div class="info-group-box">
+        <span class="info-label">Department</span>
+        <p class="info-val">Computer Science & Engineering</p>
+      </div>
+      <div class="info-group-box">
+        <span class="info-label">CGPA (Semester 2)</span>
+        <p class="info-val" style="color: var(--success); font-size: 1.2rem;">9.20 / 10.0</p>
+      </div>
+    </section>
+
+    <div class="grid-2">
+      <!-- Subjects Block -->
+      <section class="organic-card organic-card-1" style="padding: 30px;">
+        <h3 class="font-poppins" style="margin-bottom: 20px; display: flex; align-items: center; gap: 8px;">
+          <i data-lucide="book-open" style="color: var(--primary)"></i> Enrolled Courses (Sem 3)
+        </h3>
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <div style="padding: 12px; background: var(--bg-light); border-left: 4px solid var(--primary); border-radius: 4px;">
+            <p style="font-weight: 600; font-size: 0.9rem;">Fundamental of Computer Networking</p>
+            <span style="font-size: 0.75rem; color: var(--text-muted);">Course Code: CS-301</span>
+          </div>
+          <div style="padding: 12px; background: var(--bg-light); border-left: 4px solid var(--primary); border-radius: 4px;">
+            <p style="font-weight: 600; font-size: 0.9rem;">Web Development Frameworks</p>
+            <span style="font-size: 0.75rem; color: var(--text-muted);">Course Code: CS-302</span>
+          </div>
+          <div style="padding: 12px; background: var(--bg-light); border-left: 4px solid var(--primary); border-radius: 4px;">
+            <p style="font-weight: 600; font-size: 0.9rem;">Object Oriented Programming (Java)</p>
+            <span style="font-size: 0.75rem; color: var(--text-muted);">Course Code: CS-303</span>
+          </div>
+          <div style="padding: 12px; background: var(--bg-light); border-left: 4px solid var(--primary); border-radius: 4px;">
+            <p style="font-weight: 600; font-size: 0.9rem;">Data Structure and Algorithm</p>
+            <span style="font-size: 0.75rem; color: var(--text-muted);">Course Code: CS-304</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- General Info & Skills Block -->
+      <section class="organic-card organic-card-2" style="padding: 30px;">
+        <h3 class="font-poppins" style="margin-bottom: 20px; display: flex; align-items: center; gap: 8px;">
+          <i data-lucide="user-check" style="color: var(--primary)"></i> Key Details
+        </h3>
+        <div style="display: flex; flex-direction: column; gap: 15px;">
+          <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--lavender); padding-bottom: 10px;">
+            <span style="color: var(--text-muted); font-size: 0.9rem;">Official Email</span>
+            <span style="font-weight: 600; font-size: 0.9rem;">anushka.shah@student.edu</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--lavender); padding-bottom: 10px;">
+            <span style="color: var(--text-muted); font-size: 0.9rem;">Primary Advisor</span>
+            <span style="font-weight: 600; font-size: 0.9rem;">Dr. Sameer Sen</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--lavender); padding-bottom: 10px;">
+            <span style="color: var(--text-muted); font-size: 0.9rem;">Admission Year</span>
+            <span style="font-weight: 600; font-size: 0.9rem;">2024</span>
+          </div>
+        </div>
+
+        <h4 class="font-poppins" style="margin-top: 30px; margin-bottom: 10px;">Core Engineering Skills</h4>
+        <div class="skill-pills">
+          <div class="skill-pill">Data Structures</div>
+          <div class="skill-pill">Java programming</div>
+          <div class="skill-pill">HTML5 & CSS3</div>
+          <div class="skill-pill">Networking protocols</div>
+          <div class="skill-pill">Object-Oriented Design</div>
+        </div>
+      </section>
+    </div>
+
+    <footer class="global-footer" style="text-align: center; margin-top: 60px; color: var(--text-muted); font-size: 0.85rem;"></footer>
+  </main>
+
+  
+  <!-- Added jQuery first so our layout script can use it -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="script.js"></script>
+</body>
+</html>

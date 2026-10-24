@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StudentHub - Help Desk</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .form-wrapper-box {
+      background: var(--bg-white);
+      border-radius: var(--radius-organic-1);
+      border: 1px solid rgba(109, 94, 247, 0.1);
+      padding: 40px;
+      box-shadow: var(--shadow-soft);
+    }
+    .custom-textarea {
+      width: 100%;
+      height: 150px;
+      border: 1px solid var(--lavender);
+      border-radius: var(--radius-organic-2);
+      outline: none;
+      padding: 20px;
+      font-size: 0.9rem;
+      margin-top: 10px;
+      resize: none;
+      transition: var(--transition);
+    }
+    .custom-textarea:focus {
+      border-color: var(--primary);
+    }
+    .bubble-question {
+      background: var(--primary-light);
+      padding: 18px 24px;
+      border-radius: var(--radius-organic-2);
+      margin-bottom: 15px;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .bubble-question:hover {
+      background: var(--lavender);
+      transform: translateX(5px);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="bg-blob-container">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+  </div>
+
+  <header class="global-nav">
+    <div class="nav-container">
+      <div class="logo-group">
+        <div class="logo-icon"><i data-lucide="graduation-cap"></i></div>
+        <span class="logo-text">StudentHub</span>
+      </div>
+      <nav class="nav-links">
+        <a href="dashboard.html" class="nav-item"><i data-lucide="layout-dashboard" style="width: 16px;"></i> Dashboard</a>
+        <a href="profile.html" class="nav-item"><i data-lucide="user" style="width: 16px;"></i> Profile</a>
+        <a href="attendance.html" class="nav-item"><i data-lucide="activity" style="width: 16px;"></i> Attendance</a>
+        <a href="index.html" class="nav-item" style="color: #FF5A5A;"><i data-lucide="log-out" style="width: 16px;"></i> Logout</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main-wrapper">
+    <div class="page-intro">
+      <div>
+        <h1 class="font-poppins">Help & Feedback Desk</h1>
+        <p style="color: var(--text-muted); margin-top: 5px;">Submit feedback or queries directly to administrative support</p>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <!-- Ask Form -->
+      <section class="form-wrapper-box">
+        <h3 class="font-poppins" style="margin-bottom: 10px;">Contact Support Office</h3>
+        <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 25px;">Expect a formal email reply within 24 business hours.</p>
+        
+        <form action="#">
+          <div style="margin-bottom: 20px;">
+            <label style="font-weight: 600; font-size: 0.9rem;">Topic Classification</label>
+            <select style="width: 100%; padding: 12px; border: 1px solid var(--lavender); border-radius: var(--radius-capsule); outline:none; margin-top: 5px;">
+              <option>Evaluation and GPA updates</option>
+              <option>Lab Infrastructure & Equipment</option>
+              <option>System bug or error</option>
+            </select>
+          </div>
+          <div style="margin-bottom: 25px;">
+            <label style="font-weight: 600; font-size: 0.9rem;">State your Issue / Request</label>
+            <textarea class="custom-textarea" placeholder="Describe your query in detail..."></textarea>
+          </div>
+          <button type="submit" class="btn-primary">Submit Question <i data-lucide="send"></i></button>
+        </form>
+      </section>
+
+      <!-- Collapsible FAQ Accordion Desk -->
+      <section>
+        <h3 class="font-poppins" style="margin-bottom: 20px;">Frequently Asked Questions</h3>
+        
+        <article class="bubble-question">
+          <h4 class="font-poppins" style="font-size: 0.95rem; color: var(--primary); display: flex; justify-content: space-between; align-items: center;">
+            How do I query internal exam grade tallies? 
+            <i data-lucide="chevron-down" style="width: 16px;"></i>
+          </h4>
+          <p style="font-size: 0.8rem; color: var(--text-muted);">Please request a physical transcript audit form through your primary department advisor in Block A.</p>
+        </article>
+        
+        <article class="bubble-question" style="background: var(--bg-white); border: 1px solid rgba(109, 94, 247, 0.05); box-shadow: var(--shadow-soft);">
+          <h4 class="font-poppins" style="font-size: 0.95rem; color: var(--text-main); display: flex; justify-content: space-between; align-items: center;">
+            Where can I find lab code assets? 
+            <i data-lucide="chevron-down" style="width: 16px;"></i>
+          </h4>
+          <p style="font-size: 0.8rem; color: var(--text-muted);">Go directly to your Study Materials desk and navigate to active laboratory references inside Semester 3 records.</p>
+        </article>
+
+        <article class="bubble-question">
+          <h4 class="font-poppins" style="font-size: 0.95rem; color: var(--primary); display: flex; justify-content: space-between; align-items: center;">
+            Where do I toggle the dark interface settings? 
+            <i data-lucide="chevron-down" style="width: 16px;"></i>
+          </h4>
+          <p style="font-size: 0.8rem; color: var(--text-muted);">A persistent theme controller has been added to the header navigation. Preferences are remembered using your local browser storage.</p>
+        </article>
+      </section>
+    </div>
+
+    <footer style="text-align: center; margin-top: 60px; color: var(--text-muted); font-size: 0.85rem;">
+      <p>&copy; 2026 StudentHub. Dedicated to student support and active feedback.</p>
+    </footer>
+  </main>
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="script.js"></script>
+</body>
+</html>

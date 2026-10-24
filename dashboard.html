@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StudentHub - Interactive Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Dynamic Notification Banner -->
+  <div class="global-notification-banner" id="global-alert-banner" role="alert">
+    <div class="banner-content">
+      <span class="banner-badge">NOTICE</span>
+      <span>Welcome back! Mid-Semester examinations are commencing shortly. Ensure practical lab files are verified.</span>
+    </div>
+    <button class="banner-close-btn" id="close-banner" aria-label="Dismiss banner notification">&times;</button>
+  </div>
+
+  <!-- Dynamic Background Blobs -->
+  <div class="bg-blob-container">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+  </div>
+
+  <!-- Unified Navigation Header (Injected dynamically via script.js) -->
+  <header class="global-nav">
+    <div class="nav-container">
+      <div class="logo-group">
+        <div class="logo-icon"><i data-lucide="graduation-cap"></i></div>
+        <span class="logo-text">StudentHub</span>
+      </div>
+      
+      <nav class="nav-links" id="main-nav-links">
+        <a href="dashboard.html" class="nav-item active"><i data-lucide="layout-dashboard" style="width: 16px;"></i> Dashboard</a>
+        <a href="profile.html" class="nav-item"><i data-lucide="user" style="width: 16px;"></i> Profile</a>
+        <a href="attendance.html" class="nav-item"><i data-lucide="activity" style="width: 16px;"></i> Attendance</a>
+        <a href="about.html" class="nav-item"><i data-lucide="info" style="width: 16px;"></i> About</a>
+        <a href="contact.html" class="nav-item"><i data-lucide="phone" style="width: 16px;"></i> Contact</a>
+        <a href="index.html" class="nav-item" style="color: #FF5A5A;"><i data-lucide="log-out" style="width: 16px;"></i> Logout</a>
+      </nav>
+
+      <div class="header-controls">
+        <button class="control-btn" id="theme-toggle" aria-label="Toggle visual theme" title="Toggle Theme">
+          <i data-lucide="moon" id="theme-icon"></i>
+        </button>
+        <button class="control-btn hamburger-btn" id="menu-toggle" aria-expanded="false" aria-label="Open navigation menu" title="Toggle Navigation">
+          <i data-lucide="menu" id="menu-icon"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="main-wrapper">
+    <!-- Welcome section banner with live clock -->
+    <section class="welcome-banner">
+      <div class="welcome-blobs"></div>
+      <div class="welcome-content">
+        <p style="text-transform: uppercase; letter-spacing: 2px; font-size: 0.75rem; font-weight: 600; color: var(--primary);">Good Morning,</p>
+        <h1 class="font-poppins" style="font-size: 2.2rem; line-height: 1.1; margin: 8px 0;">ANUSHKA SHAH</h1>
+        <p style="color: var(--text-muted); font-size: 0.88rem; max-width: 500px; margin-bottom: 12px;" id="motive-quote">"Strive for progress, not perfection."</p>
+        <button class="btn-primary modal-trigger" style="font-size: 0.8rem; padding: 8px 18px;">
+          <i data-lucide="bell" style="width:14px; height:14px;"></i> View Important Notice
+        </button>
+      </div>
+      <div class="clock-display">
+        <div id="live-time">00:00:00</div>
+        <div id="live-date">Loading system schedule...</div>
+      </div>
+    </section>
+
+    <!-- Sub-Navigation Tabs -->
+    <div class="dashboard-tabs">
+      <button class="dash-tab active" data-tab="timetable">
+        <i data-lucide="calendar"></i> Schedule & Timetables
+      </button>
+      <button class="dash-tab" data-tab="insights">
+        <i data-lucide="sparkles"></i> Updates & Insights
+      </button>
+    </div>
+
+    <!-- Tab Pane Containers -->
+    <div class="tab-container">
+      
+      <!-- Tab Pane 1: Timetables & Classes (Active) -->
+      <div class="tab-pane active" id="timetable-pane">
+        <div class="dashboard-modules">
+          <!-- Today's Classes (Left Side) -->
+          <div class="organic-card organic-card-1" style="padding: 24px;">
+            <h3 class="font-poppins" style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px; font-size: 1.15rem;">
+              <i data-lucide="clock" style="color: var(--primary)"></i> Today's Classes
+            </h3>
+            <p style="color: var(--text-muted); font-size: 0.8rem; margin-bottom: 15px;">Your connected schedule timeline for Friday.</p>
+            
+            <div class="timeline-container">
+              <div class="timeline-node active">
+                <article class="timeline-card">
+                  <span style="font-size: 0.72rem; color: var(--primary); font-weight: 600;">09:00 AM - 10:30 AM</span>
+                  <h4 style="margin: 2px 0; font-size: 0.95rem;">Fundamental of Computer Networking (FCN)</h4>
+                  <p style="font-size: 0.8rem; color: var(--text-muted);"><i data-lucide="map-pin" style="width: 11px;"></i> Room 302, Block B</p>
+                </article>
+              </div>
+              <div class="timeline-node">
+                <article class="timeline-card">
+                  <span style="font-size: 0.72rem; color: var(--primary); font-weight: 600;">11:00 AM - 12:30 PM</span>
+                  <h4 style="margin: 2px 0; font-size: 0.95rem;">Web Development Frameworks (WDF)</h4>
+                  <p style="font-size: 0.8rem; color: var(--text-muted);"><i data-lucide="map-pin" style="width: 11px;"></i> Lab 5, CSE Dept</p>
+                </article>
+              </div>
+              <div class="timeline-node">
+                <article class="timeline-card">
+                  <span style="font-size: 0.72rem; color: var(--primary); font-weight: 600;">02:00 PM - 03:30 PM</span>
+                  <h4 style="margin: 2px 0; font-size: 0.95rem;">Object Oriented Programming Java (OOP)</h4>
+                  <p style="font-size: 0.8rem; color: var(--text-muted);"><i data-lucide="map-pin" style="width: 11px;"></i> Room 101, Block A</p>
+                </article>
+              </div>
+            </div>
+          </div>
+
+          <!-- Academic Overview Metrics + Integrated Capsule Navigation Portal (Right Side) -->
+          <div style="display: flex; flex-direction: column; gap: 20px;">
+            <div class="organic-card organic-card-2" style="padding: 20px;">
+              <h3 class="font-poppins" style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px; font-size: 1.1rem;">
+                <i data-lucide="trending-up" style="color: var(--primary)"></i> Academic Overview
+              </h3>
+              <div class="progress-rings-row">
+                <div class="metric-circle-item">
+                  <div class="prog-circle" style="--percent: 88.5%; margin: 0 auto 6px;">
+                    <div class="prog-inner">88%</div>
+                  </div>
+                  <p style="font-size: 0.8rem; font-weight: 600;">Attendance</p>
+                  <p style="font-size: 0.65rem; color: var(--text-muted);">Required: 75%</p>
+                </div>
+                <div class="metric-circle-item">
+                  <div class="prog-circle" style="--percent: 92%; --primary: #4CAF50; margin: 0 auto 6px;">
+                    <div class="prog-inner" style="color: #4CAF50;">9.20</div>
+                  </div>
+                  <p style="font-size: 0.8rem; font-weight: 600;">CGPA</p>
+                  <p style="font-size: 0.65rem; color: var(--text-muted);">Semester 2</p>
+                </div>
+                <div class="metric-circle-item">
+                  <div class="prog-circle" style="--percent: 75%; --primary: var(--warning); margin: 0 auto 6px;">
+                    <div class="prog-inner" style="color: var(--warning);">3/4</div>
+                  </div>
+                  <p style="font-size: 0.8rem; font-weight: 600;">Assignments</p>
+                  <p style="font-size: 0.65rem; color: var(--text-muted);">1 Pending</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Integrated & Compact Navigation Portal -->
+            <div class="organic-card organic-card-1" style="padding: 18px 20px;">
+              <h3 class="font-poppins" style="margin-bottom: 12px; font-size: 1.1rem;">Navigation Portal</h3>
+              <div class="capsule-grid">
+                <a href="profile.html" class="nav-tile">
+                  <div class="nav-tile-icon"><i data-lucide="user"></i></div>
+                  <div class="tile-title">Profile</div>
+                </a>
+                <a href="attendance.html" class="nav-tile">
+                  <div class="nav-tile-icon"><i data-lucide="activity"></i></div>
+                  <div class="tile-title">Attendance</div>
+                </a>
+                <a href="results.html" class="nav-tile">
+                  <div class="nav-tile-icon"><i data-lucide="award"></i></div>
+                  <div class="tile-title">Results</div>
+                </a>
+                <a href="materials.html" class="nav-tile">
+                  <div class="nav-tile-icon"><i data-lucide="book-open"></i></div>
+                  <div class="tile-title">Study Files</div>
+                </a>
+                <a href="calendar.html" class="nav-tile">
+                  <div class="nav-tile-icon"><i data-lucide="calendar"></i></div>
+                  <div class="tile-title">Calendar</div>
+                </a>
+                <a href="events.html" class="nav-tile">
+                  <div class="nav-tile-icon"><i data-lucide="sparkles"></i></div>
+                  <div class="tile-title">Events</div>
+                </a>
+                <a href="notifications.html" class="nav-tile">
+                  <div class="nav-tile-icon"><i data-lucide="bell"></i></div>
+                  <div class="tile-title">Notifs</div>
+                </a>
+                <a href="fees.html" class="nav-tile">
+                  <div class="nav-tile-icon"><i data-lucide="credit-card"></i></div>
+                  <div class="tile-title">Fees Ledger</div>
+                </a>
+                <a href="help-feedback.html" class="nav-tile">
+                  <div class="nav-tile-icon"><i data-lucide="help-circle"></i></div>
+                  <div class="tile-title">Helpdesk</div>
+                </a>
+                <a href="about.html" class="nav-tile">
+                  <div class="nav-tile-icon"><i data-lucide="info"></i></div>
+                  <div class="tile-title">About System</div>
+                </a>
+                <a href="contact.html" class="nav-tile">
+                  <div class="nav-tile-icon"><i data-lucide="phone"></i></div>
+                  <div class="tile-title">Contact Desk</div>
+                </a>
+                <a href="index.html" class="nav-tile" style="border-color: rgba(255, 90, 90, 0.15);">
+                  <div class="nav-tile-icon" style="background: rgba(255, 90, 90, 0.1); color: #FF5A5A;"><i data-lucide="log-out"></i></div>
+                  <div class="tile-title" style="color: #FF5A5A;">Logout</div>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab Pane 2: Announcements & Embedded FAQ System -->
+      <div class="tab-pane" id="insights-pane">
+        <div class="dashboard-modules">
+          <!-- Announcements Content Slider -->
+          <div class="organic-card organic-card-1" style="padding: 24px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+              <h3 class="font-poppins" style="display: flex; align-items: center; gap: 10px; margin: 0; font-size: 1.15rem;">
+                <i data-lucide="megaphone" style="color: var(--primary)"></i> Academic Announcements
+              </h3>
+              <div class="slider-controls">
+                <button class="slider-btn prev-btn" id="slider-prev" aria-label="Previous slide">&larr;</button>
+                <button class="slider-btn next-btn" id="slider-next" aria-label="Next slide">&rarr;</button>
+              </div>
+            </div>
+            
+            <div class="portal-slider">
+              <div class="slider-track" id="slider-track">
+                <article class="slide">
+                  <span class="slide-badge">Academic Branch</span>
+                  <h4 class="font-poppins" style="margin-bottom: 6px; font-size: 0.95rem;">Mid-Semester Practical Examination Schedule</h4>
+                  <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 10px; max-width: 95%;">The laboratory practical assessments for Web Development Frameworks and DSA are scheduled to commence from next Monday. Please download your hall tickets.</p>
+                  <a href="materials.html" style="font-size: 0.8rem; color: var(--primary); font-weight: 600; display: inline-flex; align-items: center; gap: 4px;">Download Blueprint <i data-lucide="arrow-right" style="width:12px;"></i></a>
+                </article>
+                
+                <article class="slide">
+                  <span class="slide-badge info">Exhibition Lab</span>
+                  <h4 class="font-poppins" style="margin-bottom: 6px; font-size: 0.95rem;">Technical Project Abstract Verification</h4>
+                  <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 10px; max-width: 95%;">Ensure your CSS Grid system layouts are verified for the upcoming Innovate CSE Expo. Submit system specifications by Friday.</p>
+                  <a href="materials.html" style="font-size: 0.8rem; color: var(--primary); font-weight: 600; display: inline-flex; align-items: center; gap: 4px;">Exhibition Guidelines <i data-lucide="arrow-right" style="width:12px;"></i></a>
+                </article>
+
+                <article class="slide">
+                  <span class="slide-badge warning">System Auditing</span>
+                  <h4 class="font-poppins" style="margin-bottom: 6px; font-size: 0.95rem;">Campus Audit and Diagnostics</h4>
+                  <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 10px; max-width: 95%;">Access real-time database frameworks structure mappings and test verification cases directly via system trigger cards.</p>
+                  <a href="#" class="modal-trigger" style="font-size: 0.8rem; color: var(--primary); font-weight: 600; display: inline-flex; align-items: center; gap: 4px;">Open Audit Modal <i data-lucide="arrow-right" style="width:14px;"></i></a>
+                </article>
+              </div>
+            </div>
+          </div>
+
+          <!-- FAQ Accordion Embedded (Managed dynamically via faqs.json) -->
+          <div class="organic-card organic-card-2" style="padding: 24px;">
+            <h3 class="font-poppins" style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px; font-size: 1.15rem;">
+              <i data-lucide="help-circle" style="color: var(--primary)"></i> Quick Support FAQs
+            </h3>
+            
+            <!-- Target Dynamic FAQ Container -->
+            <div class="faq-container" id="dashboard-faq-container">
+              <div style="text-align: center; padding: 20px;">
+                <i data-lucide="loader" class="spin-animation" style="color: var(--primary);"></i>
+                <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 5px;">Fetching active campus FAQs...</p>
+              </div>
+            </div>
+
+            <form id="faq-question-form" class="faq-question-form">
+              <input
+                type="text"
+                id="faq-question-input"
+                placeholder="Have another question?"
+                maxlength="150"
+                autocomplete="off"
+                required
+              >
+              <button type="submit">
+                <i data-lucide="send"></i>
+                Ask
+              </button>
+            </form>
+
+            <div id="faq-submitted-questions" class="faq-submitted-questions"></div>
+          </div>
+
+    <!-- Global Footer -->
+    <footer class="global-footer" style="text-align: center; margin-top: 40px; color: var(--text-muted); font-size: 0.8rem;"></footer>
+
+  </main>
+
+  <!-- Important Academic Notice Modal Popup -->
+  <div class="custom-modal-overlay" id="audit-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="custom-modal-container">
+      <button class="modal-close-btn" id="close-modal-btn" aria-label="Close Notice Modal">&times;</button>
+      <h3 class="font-poppins" id="modal-title" style="color: var(--primary); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; font-size: 1.15rem;">
+        <i data-lucide="bell"></i> Important Academic Notice
+      </h3>
+      <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 15px;">
+        Review active notifications and verification guidelines for: <strong>Anushka Shah (25CS097)</strong>.
+      </p>
+      <ul class="spec-list">
+        <li><strong>Affiliation:</strong> Charotar University of Science and Technology (CHARUSAT) academic guidelines</li>
+        <li><strong>Mid-Sem Assessments:</strong> Practical exam files and journals must be fully signed and verified by respective course faculty.</li>
+        <li><strong>Innovate CSE Expo:</strong> Technical project abstracts using responsive CSS Grid layouts are due to your coordinator by Friday.</li>
+        <li><strong>Attendance Notice:</strong> Maintain a minimum of 75% aggregate attendance to guarantee hall-ticket verification.</li>
+      </ul>
+      <!-- Status element inside modal (maintained for script.js compatibility) -->
+      <div id="diagnostic-status" class="diagnostic-status"></div>
+      <button class="btn-primary" id="run-diagnostic-btn" style="width: 100%; margin-top: 15px; justify-content: center;">
+        Acknowledge & Close <i data-lucide="check-circle" style="width: 14px;"></i>
+      </button>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="script.js"></script>
+</body>
+</html>

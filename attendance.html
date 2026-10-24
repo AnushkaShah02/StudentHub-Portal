@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StudentHub - Attendance Tracker</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .metric-display {
+      background: var(--bg-white);
+      border-radius: var(--radius-organic-1);
+      border: 1px solid rgba(109, 94, 247, 0.1);
+      padding: 40px;
+      display: flex;
+      align-items: center;
+      gap: 40px;
+      box-shadow: var(--shadow-soft);
+      margin-bottom: 40px;
+    }
+    .att-pie {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      background: conic-gradient(var(--primary) 88.5%, var(--lavender) 0);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .att-inner {
+      width: 110px;
+      height: 110px;
+      background: var(--bg-white);
+      border-radius: 50%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .sub-attendance-list {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .subject-att-card {
+      background: var(--bg-white);
+      border-radius: var(--radius-organic-2);
+      border: 1px solid rgba(109, 94, 247, 0.05);
+      padding: 24px;
+      box-shadow: var(--shadow-soft);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .custom-bar-track {
+      width: 250px;
+      height: 12px;
+      background: var(--lavender);
+      border-radius: var(--radius-capsule);
+      overflow: hidden;
+      margin-top: 8px;
+    }
+    .custom-bar-fill {
+      height: 100%;
+      background: var(--primary);
+      border-radius: var(--radius-capsule);
+    }
+    @media (max-width: 768px) {
+      .metric-display { flex-direction: column; text-align: center; }
+      .subject-att-card { flex-direction: column; align-items: flex-start; gap: 15px; }
+      .custom-bar-track { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="bg-blob-container">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+  </div>
+
+  <header class="global-nav">
+    <div class="nav-container">
+      <div class="logo-group">
+        <div class="logo-icon"><i data-lucide="graduation-cap"></i></div>
+        <span class="logo-text">StudentHub</span>
+      </div>
+      <nav class="nav-links">
+        <a href="dashboard.html" class="nav-item"><i data-lucide="layout-dashboard" style="width: 16px;"></i> Dashboard</a>
+        <a href="profile.html" class="nav-item"><i data-lucide="user" style="width: 16px;"></i> Profile</a>
+        <a href="attendance.html" class="nav-item"><i data-lucide="activity" style="width: 16px;"></i> Attendance</a>
+        <a href="index.html" class="nav-item" style="color: #FF5A5A;"><i data-lucide="log-out" style="width: 16px;"></i> Logout</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main-wrapper">
+    <div class="page-intro">
+      <div>
+        <h1 class="font-poppins">Attendance Ledger</h1>
+        <p style="color: var(--text-muted); margin-top: 5px;">Track your course presence requirements</p>
+      </div>
+    </div>
+
+    <!-- Overall Presence Indicator -->
+    <section class="metric-display">
+      <div class="att-pie">
+        <div class="att-inner">
+          <span style="font-size: 1.8rem; font-weight: 700; color: var(--primary);">88.5%</span>
+          <span style="font-size: 0.75rem; color: var(--text-muted);">Avg Presence</span>
+        </div>
+      </div>
+      <div>
+        <h3 class="font-poppins" style="margin-bottom: 8px;">Excellent Consistency!</h3>
+        <p style="color: var(--text-muted); font-size: 0.95rem; max-width: 600px;">Your aggregate semester presence sits comfortably at 88.5%. You have completed requirements across all registered CSE courses for the current semester cycle.</p>
+      </div>
+    </section>
+
+    <!-- Subject Wise List -->
+    <section class="sub-attendance-list">
+      <article class="subject-att-card">
+        <div>
+          <h4 class="font-poppins">Fundamental of Computer Networking</h4>
+          <span style="font-size: 0.8rem; color: var(--text-muted);">Lectures Completed: 26/28</span>
+          <div class="custom-bar-track">
+            <div class="custom-bar-fill" style="width: 92%;"></div>
+          </div>
+        </div>
+        <div style="text-align: right;">
+          <span style="font-size: 1.5rem; font-weight: 700; color: var(--primary);">92%</span>
+          <p style="font-size: 0.75rem; color: var(--success);"><i data-lucide="check" style="width:12px;"></i> Eligible</p>
+        </div>
+      </article>
+
+      <article class="subject-att-card">
+        <div>
+          <h4 class="font-poppins">Web Development Frameworks</h4>
+          <span style="font-size: 0.8rem; color: var(--text-muted);">Lectures Completed: 22/25</span>
+          <div class="custom-bar-track">
+            <div class="custom-bar-fill" style="width: 88%;"></div>
+          </div>
+        </div>
+        <div style="text-align: right;">
+          <span style="font-size: 1.5rem; font-weight: 700; color: var(--primary);">88%</span>
+          <p style="font-size: 0.75rem; color: var(--success);"><i data-lucide="check" style="width:12px;"></i> Eligible</p>
+        </div>
+      </article>
+
+      <article class="subject-att-card">
+        <div>
+          <h4 class="font-poppins">Object Oriented Programing Java</h4>
+          <span style="font-size: 0.8rem; color: var(--text-muted);">Lectures Completed: 24/28</span>
+          <div class="custom-bar-track">
+            <div class="custom-bar-fill" style="width: 85%;"></div>
+          </div>
+        </div>
+        <div style="text-align: right;">
+          <span style="font-size: 1.5rem; font-weight: 700; color: var(--primary);">85%</span>
+          <p style="font-size: 0.75rem; color: var(--success);"><i data-lucide="check" style="width:12px;"></i> Eligible</p>
+        </div>
+      </article>
+
+      <article class="subject-att-card">
+        <div>
+          <h4 class="font-poppins">Data Structure and Algorithm</h4>
+          <span style="font-size: 0.8rem; color: var(--text-muted);">Lectures Completed: 27/30</span>
+          <div class="custom-bar-track">
+            <div class="custom-bar-fill" style="width: 90%;"></div>
+          </div>
+        </div>
+        <div style="text-align: right;">
+          <span style="font-size: 1.5rem; font-weight: 700; color: var(--primary);">90%</span>
+          <p style="font-size: 0.75rem; color: var(--success);"><i data-lucide="check" style="width:12px;"></i> Eligible</p>
+        </div>
+      </article>
+    </section>
+
+    <footer style="text-align: center; margin-top: 60px; color: var(--text-muted); font-size: 0.85rem;">
+      <p>&copy; 2026 StudentHub. All academic records are system verified.</p>
+    </footer>
+  </main>
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="script.js"></script>
+</body>
+</html>
