@@ -3,11 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>StudentHub - CHARUSAT Login</title>
+  <title>StudentHub - CHARUSAT Gateway</title>
   <link rel="stylesheet" href="style.css">
   
-  <!-- Importing Playfair Display for the university header and Outfit for subheaders -->
-  <!-- Dynamic, Responsive, & Compact Styling for Login -->
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,600;0,700;1,500&display=swap');
 
@@ -23,7 +21,7 @@
     .university-header {
       font-family: 'Playfair Display', serif;
       font-weight: 700;
-      font-size: 1.6rem; /* Scaled down for screen clearance */
+      font-size: 1.6rem;
       color: var(--primary-dark);
       text-align: center;
       line-height: 1.25;
@@ -36,15 +34,15 @@
       font-size: 0.9rem;
       color: var(--text-muted);
       text-align: center;
-      margin-bottom: 20px; /* Reduced to pull inputs up */
+      margin-bottom: 20px;
       letter-spacing: 0.5px;
     }
 
     .login-card {
       background: var(--bg-white);
-      max-width: 420px; /* Marginally narrower */
+      max-width: 430px;
       width: 100%;
-      padding: 30px 25px; /* Thinner padding for vertical space save */
+      padding: 30px 25px;
       border-radius: var(--radius-organic-1);
       border: 1px solid rgba(109, 94, 247, 0.1);
       box-shadow: var(--shadow-hover);
@@ -52,7 +50,6 @@
       z-index: 10;
     }
 
-    /* Keep the dashed design trace */
     .login-card::after {
       content: '';
       position: absolute;
@@ -67,13 +64,13 @@
     }
 
     .form-group {
-      margin-bottom: 16px; /* Tightened form spacing */
+      margin-bottom: 16px;
       position: relative;
     }
 
     .form-input {
       width: 100%;
-      padding: 12px 15px 12px 45px; /* Compact input height */
+      padding: 12px 15px 12px 45px;
       border: 1px solid var(--lavender);
       border-radius: var(--radius-capsule);
       outline: none;
@@ -100,7 +97,7 @@
     .logo-badge {
       display: flex;
       justify-content: center;
-      margin-bottom: 15px; /* Reduced gap */
+      margin-bottom: 15px;
     }
 
     .logo-badge-icon {
@@ -112,11 +109,40 @@
       align-items: center;
       justify-content: center;
     }
+
+    .role-switcher-row {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .role-btn {
+      flex: 1;
+      padding: 8px 12px;
+      border: 1px solid var(--lavender);
+      background: var(--bg-light);
+      border-radius: var(--radius-capsule);
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--text-main);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: var(--transition);
+    }
+
+    .role-btn:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+      background: var(--primary-light);
+    }
   </style>
 </head>
 <body>
 
-  <!-- Dynamic Slow Background Blobs -->
+  <!-- Dynamic Background Blobs -->
   <div class="bg-blob-container">
     <div class="blob blob-1"></div>
     <div class="blob blob-2"></div>
@@ -132,35 +158,46 @@
         </div>
       </div>
 
-      <!-- Specialized Header -->
+      <!-- Header -->
       <h1 class="university-header">Welcome to CHARUSAT's Student Portal</h1>
       <p class="portal-subtitle">Secure Academic Gatekeeper</p>
+
+      <!-- One-Click Fast Role Selection for Testing/Viva -->
+      <div class="role-switcher-row">
+        <button type="button" class="role-btn" onclick="selectRole('admin')">
+          <i data-lucide="shield-check" style="width:14px; color:var(--primary);"></i> Admin Credentials
+        </button>
+        <button type="button" class="role-btn" onclick="selectRole('student')">
+          <i data-lucide="user" style="width:14px; color:var(--primary);"></i> Student Credentials
+        </button>
+      </div>
       
-      <form action="dashboard.html" method="GET">
+      <!-- POST TO PHP AUTHENTICATOR -->
+      <form action="login.php" method="POST">
         <div class="form-group">
           <i data-lucide="mail" class="form-icon"></i>
-          <input type="email" class="form-input" placeholder="Your College Email" required value="anushka.shah@student.edu">
+          <input type="email" name="email" id="login-email" class="form-input" placeholder="Your College Email" required value="admin@charusat.edu.in">
         </div>
         
         <div class="form-group">
           <i data-lucide="lock" class="form-icon"></i>
-          <input type="password" class="form-input" placeholder="Password" required value="••••••••">
+          <input type="password" name="password" id="login-password" class="form-input" placeholder="Password" required value="Admin@1234">
         </div>
         
-        <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; margin-bottom: 30px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; margin-bottom: 25px;">
           <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; color: var(--text-muted); font-family: 'Outfit', sans-serif;">
-            <input type="checkbox" checked style="accent-color: var(--primary);"> Keep me logged in
+            <input type="checkbox" name="remember_me" checked style="accent-color: var(--primary);"> Keep me logged in
           </label>
           <a href="#" style="color: var(--primary); font-weight: 500; font-family: 'Outfit', sans-serif;">Forgot Password?</a>
         </div>
         
-        <button type="submit" class="btn-primary" style="width: 100%; justify-content: center; padding: 16px; font-family: 'Outfit', sans-serif;">
+        <button type="submit" class="btn-primary" style="width: 100%; justify-content: center; padding: 15px; font-family: 'Outfit', sans-serif;">
           Enter Portal <i data-lucide="arrow-right" style="width: 18px; height: 18px;"></i>
         </button>
       </form>
       
-      <p style="text-align: center; margin-top: 30px; font-size: 0.9rem; color: var(--text-muted); font-family: 'Outfit', sans-serif;">
-        New student? <a href="register.html" style="color: var(--primary); font-weight: 600;">Create an account</a>
+      <p style="text-align: center; margin-top: 25px; font-size: 0.9rem; color: var(--text-muted); font-family: 'Outfit', sans-serif;">
+        New student? <a href="register.php" style="color: var(--primary); font-weight: 600;">Create an account</a>
       </p>
     </section>
   </main>
@@ -169,8 +206,18 @@
     <p>&copy; 2026 Charotar University of Science and Technology (CHARUSAT).</p>
   </footer>
 
-  <!-- Lucide & Scripts -->
   <script src="https://unpkg.com/lucide@latest"></script>
-  <script src="script.js"></script>
+  <script>
+    lucide.createIcons();
+    function selectRole(role) {
+      if (role === 'admin') {
+        document.getElementById('login-email').value = 'admin@charusat.edu.in';
+        document.getElementById('login-password').value = 'Admin@1234';
+      } else {
+        document.getElementById('login-email').value = 'anushka.shah@student.edu';
+        document.getElementById('login-password').value = 'Admin@1234';
+      }
+    }
+  </script>
 </body>
 </html>

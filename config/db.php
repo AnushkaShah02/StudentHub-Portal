@@ -1,5 +1,5 @@
 <?php
-// config/db.php - Handles PDO connection, CSRF tokens, session timeouts & audit logs (Practical 8, 10, 14)
+// config/db.php - Handles PDO connection, CSRF tokens, session timeouts & audit logs
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -41,13 +41,13 @@ function record_audit_log($action, $details = '') {
         $stmt = $pdo->prepare("INSERT INTO audit_logs (user_id, action, details, ip_address) VALUES (?, ?, ?, ?)");
         $stmt->execute([$userId, $action, $details, $ip]);
     } catch (Exception $e) {
-        // Continue silently if audit log fails
+        // Silently continue
     }
 }
 
 // Session Timeout Check (15 mins inactivity) (Practical 10)
 function check_session_timeout() {
-    $timeout = 900; // 15 minutes
+    $timeout = 30; // 15 minutes
     if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity'] > $timeout)) {
         session_unset();
         session_destroy();

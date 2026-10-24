@@ -1,721 +1,574 @@
-document.addEventListener("DOMContentLoaded", () => {
-
-  // Dynamic animations setup
-  const animationStyles = document.createElement("style");
-  animationStyles.textContent = `
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-    .spin-animation {
-      display: inline-block;
-      animation: spin 1s linear infinite;
-    }
-    
-    .bubble-question, [class*="faq-card"], [class*="faq-item"] {
-      border: 1px solid rgba(109, 94, 247, 0.05) !important;
-      transition: transform 0.3s ease, background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease !important;
-    }
-    .bubble-question:hover, [class*="faq-card"]:hover, [class*="faq-item"]:hover {
-      border-color: var(--primary) !important;
-      transform: translateX(4px);
-    }
-    .bubble-question.expanded, [class*="faq-card"].expanded, [class*="faq-item"].expanded {
-      background: var(--bg-white) !important;
-      border-color: var(--primary) !important;
-      box-shadow: var(--shadow-hover) !important;
-    }
-  `;
-  document.head.appendChild(animationStyles);
-
-  /* ==========================================================
-     REUSABLE NAVIGATION HEADER INJECTION
-     ========================================================== */
-  const globalNav = document.querySelector(".global-nav");
-  if (globalNav) {
-    const currentPath = window.location.pathname;
-    const isCurrentPage = (pageName) => currentPath.includes(pageName);
-
-    globalNav.innerHTML = `
-      <div class="nav-container">
-        <div class="logo-group">
-          <div class="logo-icon"><i data-lucide="graduation-cap"></i></div>
-          <span class="logo-text">StudentHub</span>
-        </div>
-        
-        <nav class="nav-links">
-          <a href="dashboard.html" class="nav-item ${isCurrentPage('dashboard.html') ? 'active' : ''}"><i data-lucide="layout-dashboard" style="width: 16px;"></i> Dashboard</a>
-          <a href="profile.html" class="nav-item ${isCurrentPage('profile.html') ? 'active' : ''}"><i data-lucide="user" style="width: 16px;"></i> Profile</a>
-          <a href="attendance.html" class="nav-item ${isCurrentPage('attendance.html') ? 'active' : ''}"><i data-lucide="activity" style="width: 16px;"></i> Attendance</a>
-          <a href="about.html" class="nav-item ${isCurrentPage('about.html') ? 'active' : ''}"><i data-lucide="info" style="width: 16px;"></i> About</a>
-          <a href="contact.html" class="nav-item ${isCurrentPage('contact.html') ? 'active' : ''}"><i data-lucide="phone" style="width: 16px;"></i> Contact</a>
-          <a href="index.html" class="nav-item" style="color: #FF5A5A;"><i data-lucide="log-out" style="width: 16px;"></i> Logout</a>
-        </nav>
-
-        <div class="header-controls">
-          <button class="control-btn" id="theme-toggle" aria-label="Toggle visual theme" title="Toggle Theme">
-            <i data-lucide="moon" id="theme-icon"></i>
-          </button>
-          <button class="control-btn hamburger-btn" id="menu-toggle" aria-expanded="false" aria-label="Open navigation menu" title="Toggle Navigation">
-            <i data-lucide="menu" id="menu-icon"></i>
-          </button>
-        </div>
-      </div>
-    `;
-  }
-
-  /* ==========================================================
-     OFFLINE DATABASES CACHING UTILITY (Advanced Extension)
-     ========================================================== */
-  async function fetchWithCache(url, cacheKey) {
-    try {
-      const response = await fetch(url);
-      if (!response.ok) throw new Error(`HTTP status response error: ${response.status}`);
-      const data = await response.json();
-      
-      // Store dynamic data to system storage
-      localStorage.setItem(cacheKey, JSON.stringify(data));
-      localStorage.setItem(`${cacheKey}_timestamp`, Date.now().toString());
-      return data;
-    } catch (error) {
-      console.warn(`Dynamic dataset retrieve failed for ${url}. Fetching offline fallback registers...`);
-      const offlineRegister = localStorage.getItem(cacheKey);
-      if (offlineRegister) {
-        return JSON.parse(offlineRegister);
-      }
-      throw error;
-    }
-  }
-
-  /* ==========================================================
-     DYNAMIC FAQS MODULE (dashboard.html)
-     ========================================================== */
-  const faqContainer = document.getElementById("dashboard-faq-container");
-  if (faqContainer) {
-    async function initDynamicFAQs() {
-      try {
-        const faqs = await fetchWithCache("faqs.json", "studentHub_faqs");
-        faqContainer.innerHTML = "";
-        
-        faqs.forEach(item => {
-          const faqNode = document.createElement("article");
-          faqNode.className = "bubble-question";
-          faqNode.innerHTML = `
-            <h4>
-              ${item.question}
-              <i data-lucide="chevron-down" style="transition: transform 0.3s ease;"></i>
-            </h4>
-            <p style="max-height: 0px; overflow: hidden; transition: max-height 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease; opacity: 0;">
-              ${item.answer}
-            </p>
-          `;
-          faqContainer.appendChild(faqNode);
-        });
-
-        setupAccordionClickDelegator();
-        if (typeof lucide !== "undefined") lucide.createIcons();
-      } catch (err) {
-        faqContainer.innerHTML = `
-          <p style="color: #FF5A5A; font-style: italic; font-size: 0.85rem; padding: 10px;">
-            Failed to process live questions array. Check local server connection logs.
-          </p>
-        `;
-      }
-    }
-
-    function setupAccordionClickDelegator() {
-      faqContainer.addEventListener("click", (e) => {
-        const clickedHeader = e.target.closest("h4");
-        if (!clickedHeader) return;
-
-        const parentArticle = clickedHeader.closest(".bubble-question");
-        if (!parentArticle) return;
-
-        const answerPane = parentArticle.querySelector("p");
-        const rotateIcon = clickedHeader.querySelector("i");
-        const isOpen = parentArticle.classList.contains("expanded");
-
-        // Close other panels cleanly
-        const allPanels = faqContainer.querySelectorAll(".bubble-question");
-        allPanels.forEach(p => {
-          p.classList.remove("expanded");
-          const ans = p.querySelector("p");
-          const icon = p.querySelector("h4 i");
-          if (ans) {
-            ans.style.maxHeight = "0px";
-            ans.style.opacity = "0";
-            ans.style.marginTop = "0";
-          }
-          if (icon) icon.style.transform = "rotate(0deg)";
-        });
-
-        if (!isOpen) {
-          parentArticle.classList.add("expanded");
-          if (answerPane) {
-            answerPane.style.maxHeight = answerPane.scrollHeight + "px";
-            answerPane.style.opacity = "1";
-            answerPane.style.marginTop = "10px";
-          }
-          if (rotateIcon) rotateIcon.style.transform = "rotate(180deg)";
-        }
-      });
-    }
-
-    initDynamicFAQs();
-  }
-
-  /* ==========================================================
-     DYNAMIC CAMPUS EVENTS MODULE (events.html)
-     ========================================================== */
-  const eventsGrid = document.getElementById("events-dynamic-grid");
-  if (eventsGrid) {
-    let allEvents = [];
-    let filteredEvents = [];
-    let currentEventPage = 1;
-    const eventsPerPage = 4;
-
-    const searchInput = document.getElementById("search-input");
-    const typeFilter = document.getElementById("type-filter");
-    const sortSelect = document.getElementById("sort-select");
-    const countrySelect = document.getElementById("country-select");
-    const stateSelect = document.getElementById("state-select");
-    const citySelect = document.getElementById("city-select");
-
-    const eventsLoading = document.getElementById("events-loading");
-    const eventsError = document.getElementById("events-error");
-
-    async function loadEventsLedger() {
-      eventsLoading.style.display = "block";
-      eventsError.style.display = "none";
-      eventsGrid.style.display = "none";
-
-      try {
-        allEvents = await fetchWithCache("events.json", "studentHub_events");
-        filteredEvents = [...allEvents];
-
-        eventsLoading.style.display = "none";
-        eventsGrid.style.display = "grid";
-
-        setupDependentDropdownData();
-        executeFiltersAndSort();
-      } catch (err) {
-        console.error("Critical events load fault", err);
-        eventsLoading.style.display = "none";
-        eventsError.style.display = "block";
-      }
-    }
-
-    function setupDependentDropdownData() {
-      // Aggregate dynamic countries
-      const countries = [...new Set(allEvents.map(e => e.country))].sort();
-      countrySelect.innerHTML = `<option value="ALL">All Countries</option>`;
-      countries.forEach(c => {
-        countrySelect.innerHTML += `<option value="${c}">${c}</option>`;
-      });
-
-      countrySelect.addEventListener("change", () => {
-        const countryVal = countrySelect.value;
-        if (countryVal === "ALL") {
-          stateSelect.innerHTML = `<option value="ALL">All States</option>`;
-          stateSelect.disabled = true;
-          citySelect.innerHTML = `<option value="ALL">All Cities</option>`;
-          citySelect.disabled = true;
-        } else {
-          const states = [...new Set(allEvents.filter(e => e.country === countryVal).map(e => e.state))].sort();
-          stateSelect.innerHTML = `<option value="ALL">All States</option>`;
-          states.forEach(s => {
-            stateSelect.innerHTML += `<option value="${s}">${s}</option>`;
-          });
-          stateSelect.disabled = false;
-
-          citySelect.innerHTML = `<option value="ALL">All Cities</option>`;
-          citySelect.disabled = true;
-        }
-        executeFiltersAndSort();
-      });
-
-      stateSelect.addEventListener("change", () => {
-        const countryVal = countrySelect.value;
-        const stateVal = stateSelect.value;
-
-        if (stateVal === "ALL") {
-          citySelect.innerHTML = `<option value="ALL">All Cities</option>`;
-          citySelect.disabled = true;
-        } else {
-          const cities = [...new Set(allEvents.filter(e => e.country === countryVal && e.state === stateVal).map(e => e.city))].sort();
-          citySelect.innerHTML = `<option value="ALL">All Cities</option>`;
-          cities.forEach(c => {
-            citySelect.innerHTML += `<option value="${c}">${c}</option>`;
-          });
-          citySelect.disabled = false;
-        }
-        executeFiltersAndSort();
-      });
-
-      citySelect.addEventListener("change", executeFiltersAndSort);
-    }
-
-    function executeFiltersAndSort() {
-      let result = [...allEvents];
-
-      // 1. Context Match search
-      const query = searchInput.value.toLowerCase().trim();
-      if (query) {
-        result = result.filter(e => 
-          e.title.toLowerCase().includes(query) ||
-          e.description.toLowerCase().includes(query) ||
-          e.venue.toLowerCase().includes(query)
-        );
-      }
-
-      // 2. Event category match
-      const typeVal = typeFilter.value;
-      if (typeVal !== "ALL") {
-        result = result.filter(e => e.type === typeVal);
-      }
-
-      // 3. Country matches
-      const countryVal = countrySelect.value;
-      if (countryVal !== "ALL") {
-        result = result.filter(e => e.country === countryVal);
-      }
-
-      // 4. State matches
-      const stateVal = stateSelect.value;
-      if (stateVal && stateVal !== "ALL") {
-        result = result.filter(e => e.state === stateVal);
-      }
-
-      // 5. City matches
-      const cityVal = citySelect.value;
-      if (cityVal && cityVal !== "ALL") {
-        result = result.filter(e => e.city === cityVal);
-      }
-
-      // 6. Sorting
-      const sortVal = sortSelect.value;
-      if (sortVal === "date-asc") {
-        result.sort((a, b) => new Date(a.date) - new Date(b.date));
-      } else if (sortVal === "date-desc") {
-        result.sort((a, b) => new Date(b.date) - new Date(a.date));
-      } else if (sortVal === "registrations-desc") {
-        result.sort((a, b) => b.registrations - a.registrations);
-      } else if (sortVal === "title-asc") {
-        result.sort((a, b) => a.title.localeCompare(b.title));
-      }
-
-      filteredEvents = result;
-      currentEventPage = 1;
-      renderEventsPage();
-    }
-
-    function renderEventsPage() {
-      const totalEvents = filteredEvents.length;
-      const totalPages = Math.ceil(totalEvents / eventsPerPage) || 1;
-
-      if (currentEventPage > totalPages) currentEventPage = totalPages;
-      if (currentEventPage < 1) currentEventPage = 1;
-
-      const startIndex = (currentEventPage - 1) * eventsPerPage;
-      const paginatedSlice = filteredEvents.slice(startIndex, startIndex + eventsPerPage);
-
-      eventsGrid.innerHTML = "";
-
-      if (paginatedSlice.length === 0) {
-        eventsGrid.innerHTML = `
-          <p style="text-align: center; grid-column: 1 / -1; color: var(--text-muted); font-style: italic; padding: 40px;">
-            No event entries match your filtering parameters.
-          </p>
-        `;
-        document.getElementById("page-indicator").textContent = `Page 0 of 0`;
-        return;
-      }
-
-      paginatedSlice.forEach(evt => {
-        const article = document.createElement("article");
-        article.className = "event-card-organic";
-
-        let badgeStyles = "background: var(--primary-light); color: var(--primary);";
-        if (evt.type === "WORKSHOP") badgeStyles = "background: #EAF7EA; color: #4CAF50;";
-        else if (evt.type === "SEMINAR") badgeStyles = "background: #FFF3E0; color: #FF9800;";
-
-        article.innerHTML = `
-          <div style="display: flex; flex-direction: column; height: 100%;">
-            <div class="event-badge-row">
-              <span class="event-badge" style="${badgeStyles}">${evt.type}</span>
-              <span style="font-size: 0.72rem; color: var(--text-muted); font-weight: 600;">${evt.date}</span>
-            </div>
-            
-            <h4 class="font-poppins">${evt.title}</h4>
-            <p>${evt.description}</p>
-            
-            <div class="event-meta-info">
-              <span><i data-lucide="map-pin"></i> ${evt.venue} (${evt.city}, ${evt.state})</span>
-              <span><i data-lucide="users"></i> ${evt.registrations} Registered / ${evt.seats} Seats</span>
-            </div>
-            
-            <div class="event-footer">
-              <span class="event-fee">${evt.fee}</span>
-              <button class="btn-primary" style="padding: 8px 16px; font-size: 0.8rem; border-radius: var(--radius-capsule);">
-                Register <i data-lucide="plus-circle" style="width: 14px; height: 14px;"></i>
-              </button>
-            </div>
-          </div>
-        `;
-        eventsGrid.appendChild(article);
-      });
-
-      document.getElementById("page-indicator").textContent = `Page ${currentEventPage} of ${totalPages}`;
-      document.getElementById("prev-page").disabled = currentEventPage === 1;
-      document.getElementById("next-page").disabled = currentEventPage === totalPages;
-
-      if (typeof lucide !== "undefined") lucide.createIcons();
-    }
-
-    // Connect controller hooks
-    searchInput.addEventListener("input", executeFiltersAndSort);
-    typeFilter.addEventListener("change", executeFiltersAndSort);
-    sortSelect.addEventListener("change", executeFiltersAndSort);
-
-    document.getElementById("prev-page").addEventListener("click", () => {
-      if (currentEventPage > 1) {
-        currentEventPage--;
-        renderEventsPage();
-      }
-    });
-
-    document.getElementById("next-page").addEventListener("click", () => {
-      const maxPages = Math.ceil(filteredEvents.length / eventsPerPage) || 1;
-      if (currentEventPage < maxPages) {
-        currentEventPage++;
-        renderEventsPage();
-      }
-    });
-
-    const retryBtn = document.getElementById("retry-events-btn");
-    if (retryBtn) retryBtn.addEventListener("click", loadEventsLedger);
-
-    loadEventsLedger();
-  }
-
-  /* ==========================================================
-     DYNAMIC STUDENT LEADERBOARD (events.html sidebar)
-     ========================================================== */
-  const boardList = document.getElementById("dynamic-leaderboard");
-  if (boardList) {
-    async function initLeaderboard() {
-      try {
-        const studentList = await fetchWithCache("students.json", "studentHub_students");
-        studentList.sort((a, b) => b.points - a.points);
-        const leadingTier = studentList.slice(0, 3);
-
-        boardList.innerHTML = "";
-        leadingTier.forEach((st, i) => {
-          const listNode = document.createElement("li");
-          listNode.innerHTML = `<strong>${st.name}</strong> (${st.points} pts) - ${st.department}`;
-          boardList.appendChild(listNode);
-        });
-      } catch (err) {
-        boardList.innerHTML = `
-          <li>Anushka Shah (980 pts) [Cached]</li>
-          <li>Shrusti Chavada (920 pts) [Cached]</li>
-          <li>Bhavyaa Patel (850 pts) [Cached]</li>
-        `;
-      }
-    }
-    initLeaderboard();
-  }
-
-  /* ==========================================================
-     THEME CONTROLLER & SYSTEM CLOCK CONFIGURATION
-     ========================================================== */
-  const themeToggle = document.getElementById("theme-toggle");
-  const themeIcon = document.getElementById("theme-icon");
-
-  const applyTheme = (theme) => {
-    if (theme === "dark") {
-      document.body.classList.add("dark-theme");
-      if (themeIcon) {
-        themeIcon.setAttribute("data-lucide", "sun");
-        themeIcon.style.transform = "rotate(180deg)";
-      }
-    } else {
-      document.body.classList.remove("dark-theme");
-      if (themeIcon) {
-        themeIcon.setAttribute("data-lucide", "moon");
-        themeIcon.style.transform = "rotate(0deg)";
-      }
-    }
-    if (typeof lucide !== "undefined") lucide.createIcons();
-  };
-
-  const savedTheme = localStorage.getItem("theme") || "light";
-  applyTheme(savedTheme);
-
-  if (themeIcon) themeIcon.style.transition = "transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)";
-  if (themeToggle) {
-    themeToggle.addEventListener("click", () => {
-      const activeState = document.body.classList.contains("dark-theme") ? "light" : "dark";
-      localStorage.setItem("theme", activeState);
-      applyTheme(activeState);
-    });
-  }
-
-  // Hamburger Drawer Controls
-  const menuToggle = document.getElementById("menu-toggle");
-  const navLinks = document.querySelector(".nav-links");
-  const menuIcon = document.getElementById("menu-icon");
-
-  if (menuToggle && navLinks) {
-    menuToggle.addEventListener("click", (e) => {
-      e.stopPropagation();
-      const isOpen = navLinks.classList.toggle("nav-links-active");
-      menuToggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
-
-      if (menuIcon) {
-        menuIcon.setAttribute("data-lucide", isOpen ? "x" : "menu");
-        if (typeof lucide !== "undefined") lucide.createIcons();
-      }
-    });
-
-    document.addEventListener("click", (e) => {
-      if (navLinks.classList.contains("nav-links-active") && !navLinks.contains(e.target) && e.target !== menuToggle) {
-        navLinks.classList.remove("nav-links-active");
-        menuToggle.setAttribute("aria-expanded", "false");
-        if (menuIcon) {
-          menuIcon.setAttribute("data-lucide", "menu");
-          if (typeof lucide !== "undefined") lucide.createIcons();
-        }
-      }
-    });
-  }
-
-  // Live clock display
-  const liveTimeEl = document.getElementById("live-time");
-  const liveDateEl = document.getElementById("live-date");
-
-  if (liveTimeEl || liveDateEl) {
-    const runClock = () => {
-      const d = new Date();
-      if (liveTimeEl) liveTimeEl.textContent = d.toLocaleTimeString([], { hour12: false });
-      if (liveDateEl) liveDateEl.textContent = d.toLocaleDateString("en-US", { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-    };
-    runClock();
-    setInterval(runClock, 1000);
-  }
-
-  // Global Footers Dynamic text
-  document.querySelectorAll(".global-footer").forEach(ft => {
-    ft.innerHTML = `<p>&copy; 2026 StudentHub. All academic registries are dynamic. Affiliated directly to CHARUSAT CSE.</p>`;
-  });
-
-  // Modal notice trigger interactions
-  const overlay = document.getElementById("audit-modal-overlay");
-  const modalTriggers = document.querySelectorAll(".modal-trigger");
-  const closeModalBtn = document.getElementById("close-modal-btn");
-  const runDiagnosticBtn = document.getElementById("run-diagnostic-btn");
-
-  if (overlay) {
-    const triggerModalView = () => overlay.classList.add("modal-visible");
-    const dismissModalView = () => overlay.classList.remove("modal-visible");
-
-    modalTriggers.forEach(btn => btn.addEventListener("click", triggerModalView));
-    if (closeModalBtn) closeModalBtn.addEventListener("click", dismissModalView);
-    overlay.addEventListener("click", (e) => { if (e.target === overlay) dismissModalView(); });
-  }
-
-  if (runDiagnosticBtn && overlay) {
-    runDiagnosticBtn.addEventListener("click", () => {
-      overlay.classList.remove("modal-visible");
-    });
-  }
-
-  // Dashboard Sub-navigation Tab Toggling
-  const dashTabs = document.querySelectorAll(".dash-tab");
-  const tabPanes = document.querySelectorAll(".tab-pane");
-
-  if (dashTabs.length > 0 && tabPanes.length > 0) {
-    dashTabs.forEach(tab => {
-      tab.addEventListener("click", () => {
-        const targetPaneId = `${tab.getAttribute("data-tab")}-pane`;
-
-        dashTabs.forEach(t => t.classList.remove("active"));
-        tab.classList.add("active");
-
-        tabPanes.forEach(pane => {
-          pane.classList.remove("active");
-          if (pane.id === targetPaneId) {
-            pane.classList.add("active");
-          }
-        });
-      });
-    });
-  }
-
-  /* ==========================================================
-     GLOBAL BANNER NOTICE COMPONENT
-     ========================================================== */
-  const isAuthPage = window.location.pathname.includes("index.html") || window.location.pathname.includes("register.html");
-  if (!isAuthPage) {
-    const banner = document.getElementById("global-alert-banner");
-    const closeBannerBtn = document.getElementById("close-banner");
-
-    const isBannerDismissed = localStorage.getItem("studentHubBannerDismissed");
-    if (isBannerDismissed === "true" && banner) {
-      banner.remove();
-    } else if (banner && closeBannerBtn) {
-      closeBannerBtn.addEventListener("click", () => {
-        banner.style.transition = "transform 0.4s ease, opacity 0.4s ease, margin-top 0.4s ease";
-        banner.style.transform = "translateY(-100%)";
-        banner.style.opacity = "0";
-        localStorage.setItem("studentHubBannerDismissed", "true");
-        setTimeout(() => banner.remove(), 400);
-      });
-    }
-  }
-
-  /* ==========================================================
-     ASK FAQ QUESTION SUBMISSION FORM HANDLER
-     ========================================================== */
-  const faqForm = document.getElementById('faq-question-form');
-  const faqInput = document.getElementById('faq-question-input');
-  const submittedQuestions = document.getElementById('faq-submitted-questions');
-
-  const renderSubmittedQuestions = () => {
-    if (!submittedQuestions) return;
-    submittedQuestions.innerHTML = '';
-    const stored = JSON.parse(localStorage.getItem('studentHubQuestionsArray') || '[]');
-    stored.forEach(q => {
-      const questionItem = document.createElement('article');
-      questionItem.className = 'faq-user-question';
-      questionItem.innerHTML = `
-          <div class="faq-user-question-header">
-              <span class="faq-user-label">Your Question</span>
-              <span class="faq-user-time">${q.time}</span>
-          </div>
-          <p class="faq-user-text"></p>
-          <div class="faq-response">
-              <strong>Support Desk:</strong> Your question is logged on cache. A response will appear upon sync.
-          </div>
-      `;
-      questionItem.querySelector('.faq-user-text').textContent = q.text;
-      submittedQuestions.appendChild(questionItem);
-    });
-  };
-
-  renderSubmittedQuestions();
-
-  if (faqForm && faqInput && submittedQuestions) {
-    faqForm.addEventListener('submit', function (event) {
-      event.preventDefault();
-      const questionText = faqInput.value.trim();
-      if (!questionText) return;
-
-      const stored = JSON.parse(localStorage.getItem('studentHubQuestionsArray') || '[]');
-      stored.unshift({
-        text: questionText,
-        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-      });
-      localStorage.setItem('studentHubQuestionsArray', JSON.stringify(stored));
-
-      renderSubmittedQuestions();
-      faqInput.value = '';
-    });
-  }
-
-  // Dashboard Academic Notice Announcement Slider
-  const sliderTrack = document.getElementById("slider-track");
-  const prevBtn = document.getElementById("slider-prev");
-  const nextBtn = document.getElementById("slider-next");
-
-  if (sliderTrack) {
-    const slidesCount = sliderTrack.querySelectorAll(".slide").length;
-    let activeSlideIndex = 0;
-
-    const renderSliderPosition = () => {
-      sliderTrack.style.transform = `translateX(-${activeSlideIndex * 100}%)`;
-    };
-
-    if (nextBtn) {
-      nextBtn.addEventListener("click", (e) => {
-        e.preventDefault();
-        activeSlideIndex = (activeSlideIndex + 1) % slidesCount;
-        renderSliderPosition();
-      });
-    }
-
-    if (prevBtn) {
-      prevBtn.addEventListener("click", (e) => {
-        e.preventDefault();
-        activeSlideIndex = (activeSlideIndex - 1 + slidesCount) % slidesCount;
-        renderSliderPosition();
-      });
-    }
-  }
-
-  // Run Lucide initialization
-  if (typeof lucide !== "undefined") {
+/* ========================================================
+   STUDENTHUB MASTER ENGINE - script.js
+   Covers Practicals 1 to 6 and Integrates Practical 13 AJAX API
+   Includes Dynamic Poster Rendering & Zero-Reload Registration
+   ======================================================== */
+
+document.addEventListener('DOMContentLoaded', () => {
+  // 1. Dynamic Nav and Footer Injection (Practicals 2 & 3)
+  injectGlobalHeader();
+  injectGlobalFooter();
+
+  // Initialize Lucide Icons
+  if (window.lucide) {
     lucide.createIcons();
   }
+
+  // 2. Interactive Components (Practical 4)
+  initThemeSwitcher();
+  initMobileMenu();
+  initLiveClock();
+  initNotificationBanner();
+  initModal();
+  initDashboardTabs();
+  initAnnouncementSlider();
+
+  // 3. Dynamic Datasets & APIs (Practicals 4, 6 & 13)
+  initFAQSystem();
+  initEventsEngine();
 });
-// Practical 13: AJAX live integration with api.php
-async function loadEventsFromAPI(category = 'ALL') {
-  const container = document.getElementById('events-dynamic-grid');
-  const loader = document.getElementById('events-loading');
-  if (!container) return;
 
-  if (loader) loader.style.display = 'block';
+/* ========================================================
+   1. GLOBAL COMPONENT INJECTIONS
+   ======================================================== */
+function injectGlobalHeader() {
+  const header = document.querySelector('.global-nav');
+  if (!header || header.children.length > 0) return;
 
-  try {
-    const res = await fetch(`api.php?action=list_events&type=${category}`);
-    const json = await res.json();
-    if (loader) loader.style.display = 'none';
+  const currentPage = window.location.pathname.split('/').pop() || 'index.html';
 
-    if (json.status === 'success' && json.data.length > 0) {
-      container.innerHTML = json.data.map(ev => `
-        <article class="event-card-organic">
-          <div class="event-badge-row">
-            <span class="event-badge" style="background: var(--primary-light); color: var(--primary);">${ev.type}</span>
-            <span style="font-size: 0.8rem; color: var(--text-muted);">${ev.event_date}</span>
-          </div>
-          <h4>${ev.title}</h4>
-          <p>${ev.description}</p>
-          <div class="event-meta-info">
-            <span><i data-lucide="map-pin"></i> ${ev.venue} (${ev.city})</span>
-            <span><i data-lucide="users"></i> ${ev.registrations} Registered</span>
-          </div>
-          <div class="event-footer">
-            <span class="event-fee">${ev.fee}</span>
-            <button class="btn-primary" onclick="ajaxRegisterEvent(${ev.id})" style="font-size: 0.8rem; padding: 6px 14px;">Quick Register</button>
-          </div>
-        </article>
-      `).join('');
-      if (window.lucide) lucide.createIcons();
-    } else {
-      container.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted);">No matching events active in the database.</p>`;
-    }
-  } catch (err) {
-    if (loader) loader.style.display = 'none';
-    console.error("AJAX Error:", err);
+  header.innerHTML = `
+    <div class="nav-container">
+      <div class="logo-group">
+        <div class="logo-icon"><i data-lucide="graduation-cap"></i></div>
+        <span class="logo-text">StudentHub</span>
+      </div>
+      <nav class="nav-links" id="main-nav-links">
+        <a href="dashboard.html" class="nav-item ${currentPage === 'dashboard.html' ? 'active' : ''}"><i data-lucide="layout-dashboard" style="width: 16px;"></i> Dashboard</a>
+        <a href="profile.html" class="nav-item ${currentPage === 'profile.html' ? 'active' : ''}"><i data-lucide="user" style="width: 16px;"></i> Profile</a>
+        <a href="attendance.html" class="nav-item ${currentPage === 'attendance.html' ? 'active' : ''}"><i data-lucide="activity" style="width: 16px;"></i> Attendance</a>
+        <a href="events.html" class="nav-item ${currentPage === 'events.html' ? 'active' : ''}"><i data-lucide="calendar" style="width: 16px;"></i> Events</a>
+        <a href="about.html" class="nav-item ${currentPage === 'about.html' ? 'active' : ''}"><i data-lucide="info" style="width: 16px;"></i> About</a>
+        <a href="contact.html" class="nav-item ${currentPage === 'contact.html' ? 'active' : ''}"><i data-lucide="phone" style="width: 16px;"></i> Contact</a>
+        <a href="logout.php" class="nav-item" style="color: #FF5A5A;"><i data-lucide="log-out" style="width: 16px;"></i> Logout</a>
+      </nav>
+      <div class="header-controls">
+        <button class="control-btn" id="theme-toggle" aria-label="Toggle visual theme" title="Toggle Theme">
+          <i data-lucide="moon" id="theme-icon"></i>
+        </button>
+        <button class="control-btn hamburger-btn" id="menu-toggle" aria-expanded="false" aria-label="Open navigation menu">
+          <i data-lucide="menu" id="menu-icon"></i>
+        </button>
+      </div>
+    </div>
+  `;
+}
+
+function injectGlobalFooter() {
+  const footers = document.querySelectorAll('.global-footer');
+  footers.forEach(footer => {
+    footer.innerHTML = `
+      <div style="border-top: 1px dashed var(--lavender); padding-top: 25px; margin-top: 40px; display: flex; flex-direction: column; align-items: center; gap: 8px;">
+        <p>&copy; 2026 StudentHub. Charotar University of Science and Technology (CHARUSAT).</p>
+        <p style="font-size: 0.78rem; color: var(--text-muted);">Crafted by Anushka Shah (25CS097) — Computer Science & Engineering</p>
+      </div>
+    `;
+  });
+}
+
+/* ========================================================
+   2. THEME SWITCHER (Practical 4)
+   ======================================================== */
+function initThemeSwitcher() {
+  const themeToggle = document.getElementById('theme-toggle');
+  const savedTheme = localStorage.getItem('studenthub_theme');
+
+  if (savedTheme === 'dark') {
+    document.body.classList.add('dark-theme');
+    updateThemeIcon(true);
+  }
+
+  if (themeToggle) {
+    themeToggle.addEventListener('click', () => {
+      const isDark = document.body.classList.toggle('dark-theme');
+      localStorage.setItem('studenthub_theme', isDark ? 'dark' : 'light');
+      updateThemeIcon(isDark);
+    });
   }
 }
 
-// Asynchronous Event Registration
-window.ajaxRegisterEvent = async function(id) {
-  try {
-    const res = await fetch('api.php?action=register_event', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ event_id: id })
+function updateThemeIcon(isDark) {
+  const themeIcon = document.getElementById('theme-icon');
+  if (!themeIcon) return;
+  themeIcon.setAttribute('data-lucide', isDark ? 'sun' : 'moon');
+  if (window.lucide) lucide.createIcons();
+}
+
+/* ========================================================
+   3. MOBILE MENU & LIVE CLOCK (Practicals 3 & 4)
+   ======================================================== */
+function initMobileMenu() {
+  const menuToggle = document.getElementById('menu-toggle');
+  const navLinks = document.getElementById('main-nav-links');
+
+  if (menuToggle && navLinks) {
+    menuToggle.addEventListener('click', () => {
+      const isOpen = navLinks.classList.toggle('nav-links-active');
+      menuToggle.setAttribute('aria-expanded', isOpen);
     });
-    const result = await res.json();
-    if (result.status === 'success') {
-      alert("Registration Successful!");
-      loadEventsFromAPI();
-    } else {
-      alert(result.message);
-    }
-  } catch(e) {
-    alert("Connection error occurred.");
   }
-};
+}
+
+function initLiveClock() {
+  const timeEl = document.getElementById('live-time');
+  const dateEl = document.getElementById('live-date');
+  if (!timeEl || !dateEl) return;
+
+  function updateClock() {
+    const now = new Date();
+    timeEl.textContent = now.toLocaleTimeString('en-US', { hour12: true });
+    dateEl.textContent = now.toLocaleDateString('en-US', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
+    });
+  }
+  updateClock();
+  setInterval(updateClock, 1000);
+}
+
+function initNotificationBanner() {
+  const banner = document.getElementById('global-alert-banner');
+  const closeBtn = document.getElementById('close-banner');
+  if (banner && closeBtn) {
+    closeBtn.addEventListener('click', () => {
+      banner.style.display = 'none';
+    });
+  }
+}
+
+/* ========================================================
+   4. MODALS & DASHBOARD TABS (Practical 4)
+   ======================================================== */
+function initModal() {
+  const modal = document.getElementById('audit-modal-overlay');
+  const triggers = document.querySelectorAll('.modal-trigger');
+  const closeBtn = document.getElementById('close-modal-btn');
+  const ackBtn = document.getElementById('run-diagnostic-btn');
+
+  if (!modal) return;
+
+  triggers.forEach(t => {
+    t.addEventListener('click', (e) => {
+      e.preventDefault();
+      modal.classList.add('modal-visible');
+    });
+  });
+
+  const closeModal = () => modal.classList.remove('modal-visible');
+
+  if (closeBtn) closeBtn.addEventListener('click', closeModal);
+  if (ackBtn) ackBtn.addEventListener('click', closeModal);
+
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) closeModal();
+  });
+}
+
+function initDashboardTabs() {
+  const tabs = document.querySelectorAll('.dash-tab');
+  const panes = document.querySelectorAll('.tab-pane');
+
+  if (tabs.length === 0) return;
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const target = tab.getAttribute('data-tab');
+      tabs.forEach(t => t.classList.remove('active'));
+      panes.forEach(p => p.classList.remove('active'));
+
+      tab.classList.add('active');
+      const activePane = document.getElementById(`${target}-pane`);
+      if (activePane) activePane.classList.add('active');
+    });
+  });
+}
+
+function initAnnouncementSlider() {
+  const track = document.getElementById('slider-track');
+  const prevBtn = document.getElementById('slider-prev');
+  const nextBtn = document.getElementById('slider-next');
+
+  if (!track || !prevBtn || !nextBtn) return;
+
+  let currentSlide = 0;
+  const slides = track.querySelectorAll('.slide');
+  const totalSlides = slides.length;
+
+  function updateSlider() {
+    track.style.transform = `translateX(-${currentSlide * 100}%)`;
+  }
+
+  nextBtn.addEventListener('click', () => {
+    currentSlide = (currentSlide + 1) % totalSlides;
+    updateSlider();
+  });
+
+  prevBtn.addEventListener('click', () => {
+    currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+    updateSlider();
+  });
+}
+
+/* ========================================================
+   5. ASYNC FAQ SYSTEM (Practicals 4 & 6)
+   ======================================================== */
+async function initFAQSystem() {
+  const container = document.getElementById('dashboard-faq-container');
+  if (!container) return;
+
+  try {
+    const res = await fetch('faqs.json');
+    const faqs = await res.json();
+
+    container.innerHTML = faqs.slice(0, 4).map(f => `
+      <article class="bubble-question">
+        <h4 class="font-poppins" style="font-size: 0.95rem; color: var(--primary); display: flex; justify-content: space-between; align-items: center;">
+          ${f.question}
+          <i data-lucide="chevron-down" style="width: 16px;"></i>
+        </h4>
+        <p style="font-size: 0.82rem; color: var(--text-muted); margin-top: 6px;">${f.answer}</p>
+      </article>
+    `).join('');
+
+    if (window.lucide) lucide.createIcons();
+
+    container.querySelectorAll('.bubble-question').forEach(card => {
+      card.addEventListener('click', () => {
+        card.classList.toggle('expanded');
+        const p = card.querySelector('p');
+        if (card.classList.contains('expanded')) {
+          p.style.maxHeight = p.scrollHeight + 'px';
+          p.style.opacity = '1';
+        } else {
+          p.style.maxHeight = '0';
+          p.style.opacity = '0';
+        }
+      });
+    });
+
+  } catch (err) {
+    container.innerHTML = `<p style="font-size: 0.8rem; color: var(--text-muted); text-align: center;">Active FAQs loading...</p>`;
+  }
+
+  const form = document.getElementById('faq-question-form');
+  const input = document.getElementById('faq-question-input');
+  const target = document.getElementById('faq-submitted-questions');
+
+  if (form && input && target) {
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const val = input.value.trim();
+      if (!val) return;
+
+      const qBox = document.createElement('div');
+      qBox.className = 'faq-user-question';
+      qBox.innerHTML = `
+        <div class="faq-user-question-header">
+          <span class="faq-user-label">Submitted Query</span>
+          <span class="faq-user-time">Just now</span>
+        </div>
+        <p class="faq-user-text">${val}</p>
+        <div class="faq-response">Your query has been logged and assigned to academic support.</div>
+      `;
+      target.prepend(qBox);
+      input.value = '';
+    });
+  }
+}
+
+/* ========================================================
+   6. EVENTS ENGINE WITH DYNAMIC POSTERS & AJAX (Prac 6 & 13)
+   ======================================================== */
+function initEventsEngine() {
+  const eventsGrid = document.getElementById('events-dynamic-grid');
+  if (!eventsGrid) return;
+
+  const searchInput = document.getElementById('search-input');
+  const typeFilter = document.getElementById('type-filter');
+  const sortSelect = document.getElementById('sort-select');
+  const countrySelect = document.getElementById('country-select');
+  const stateSelect = document.getElementById('state-select');
+  const citySelect = document.getElementById('city-select');
+  const loading = document.getElementById('events-loading');
+  const errorBox = document.getElementById('events-error');
+  const prevPageBtn = document.getElementById('prev-page');
+  const nextPageBtn = document.getElementById('next-page');
+  const pageIndicator = document.getElementById('page-indicator');
+
+  let allEvents = [];
+  let currentPage = 1;
+  const itemsPerPage = 6;
+
+  loadLeaderboard();
+
+  // Expose fetchEvents globally so registration triggers real-time refresh
+  window.fetchEvents = async function() {
+    if (loading) loading.style.display = 'block';
+    if (errorBox) errorBox.style.display = 'none';
+
+    try {
+      // Practical 13: Fetch from PHP REST API
+      const res = await fetch('api.php?action=list_events');
+      if (!res.ok) throw new Error('API offline, falling back');
+      const json = await res.json();
+      allEvents = json.data;
+    } catch (e) {
+      try {
+        // Practical 6 Fallback
+        const res2 = await fetch('events.json');
+        allEvents = await res2.json();
+      } catch (err) {
+        if (loading) loading.style.display = 'none';
+        if (errorBox) errorBox.style.display = 'block';
+        return;
+      }
+    }
+
+    if (loading) loading.style.display = 'none';
+    populateDependentDropdowns();
+    renderFilteredEvents();
+  };
+
+  fetchEvents();
+
+  // Dependent Dropdowns (Country -> State -> City)
+  function populateDependentDropdowns() {
+    if (!countrySelect) return;
+    const countries = [...new Set(allEvents.map(e => e.country).filter(Boolean))];
+    countrySelect.innerHTML = '<option value="ALL">All Countries</option>';
+    countries.forEach(c => {
+      const opt = document.createElement('option');
+      opt.value = c;
+      opt.textContent = c;
+      countrySelect.appendChild(opt);
+    });
+
+    countrySelect.onchange = () => {
+      const selCountry = countrySelect.value;
+      stateSelect.innerHTML = '<option value="ALL">All States</option>';
+      citySelect.innerHTML = '<option value="ALL">All Cities</option>';
+
+      if (selCountry === 'ALL') {
+        stateSelect.disabled = true;
+        citySelect.disabled = true;
+      } else {
+        stateSelect.disabled = false;
+        citySelect.disabled = true;
+        const states = [...new Set(allEvents.filter(e => e.country === selCountry).map(e => e.state).filter(Boolean))];
+        states.forEach(s => {
+          const opt = document.createElement('option');
+          opt.value = s;
+          opt.textContent = s;
+          stateSelect.appendChild(opt);
+        });
+      }
+      currentPage = 1;
+      renderFilteredEvents();
+    };
+
+    stateSelect.onchange = () => {
+      const selState = stateSelect.value;
+      citySelect.innerHTML = '<option value="ALL">All Cities</option>';
+
+      if (selState === 'ALL') {
+        citySelect.disabled = true;
+      } else {
+        citySelect.disabled = false;
+        const cities = [...new Set(allEvents.filter(e => e.state === selState).map(e => e.city).filter(Boolean))];
+        cities.forEach(c => {
+          const opt = document.createElement('option');
+          opt.value = c;
+          opt.textContent = c;
+          citySelect.appendChild(opt);
+        });
+      }
+      currentPage = 1;
+      renderFilteredEvents();
+    };
+
+    if (citySelect) {
+      citySelect.onchange = () => {
+        currentPage = 1;
+        renderFilteredEvents();
+      };
+    }
+  }
+
+  // Filter, Sort, Paginate & Render Cards with Uploaded Posters
+  function renderFilteredEvents() {
+    let filtered = [...allEvents];
+
+    const q = searchInput ? searchInput.value.toLowerCase().trim() : '';
+    if (q) {
+      filtered = filtered.filter(e =>
+        e.title.toLowerCase().includes(q) ||
+        e.description.toLowerCase().includes(q) ||
+        (e.venue && e.venue.toLowerCase().includes(q))
+      );
+    }
+
+    const cat = typeFilter ? typeFilter.value : 'ALL';
+    if (cat !== 'ALL') {
+      filtered = filtered.filter(e => e.type.toUpperCase() === cat);
+    }
+
+    if (countrySelect && countrySelect.value !== 'ALL') {
+      filtered = filtered.filter(e => e.country === countrySelect.value);
+    }
+    if (stateSelect && !stateSelect.disabled && stateSelect.value !== 'ALL') {
+      filtered = filtered.filter(e => e.state === stateSelect.value);
+    }
+    if (citySelect && !citySelect.disabled && citySelect.value !== 'ALL') {
+      filtered = filtered.filter(e => e.city === citySelect.value);
+    }
+
+    const sort = sortSelect ? sortSelect.value : 'date-asc';
+    filtered.sort((a, b) => {
+      if (sort === 'date-asc') return new Date(a.date || a.event_date) - new Date(b.date || b.event_date);
+      if (sort === 'date-desc') return new Date(b.date || b.event_date) - new Date(a.date || a.event_date);
+      if (sort === 'registrations-desc') return (b.registrations || 0) - (a.registrations || 0);
+      if (sort === 'title-asc') return a.title.localeCompare(b.title);
+      return 0;
+    });
+
+    const totalPages = Math.ceil(filtered.length / itemsPerPage) || 1;
+    if (currentPage > totalPages) currentPage = totalPages;
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const paginatedItems = filtered.slice(startIndex, startIndex + itemsPerPage);
+
+    if (paginatedItems.length === 0) {
+      eventsGrid.innerHTML = `
+        <div style="grid-column: 1/-1; text-align: center; padding: 40px; background: var(--bg-white); border-radius: 16px;">
+          <p style="color: var(--text-muted);">No events found matching your filter criteria.</p>
+        </div>
+      `;
+    } else {
+      eventsGrid.innerHTML = paginatedItems.map(ev => {
+        // Practical 12 Poster Verification & Path Mapping
+        const hasPoster = ev.poster_image && ev.poster_image !== 'default_event.png';
+        const posterSrc = hasPoster ? `uploads/posters/${ev.poster_image}` : '';
+
+        return `
+          <article class="event-card-organic">
+            <!-- Event Poster Banner -->
+            <div style="width: 100%; height: 160px; border-radius: 14px; overflow: hidden; margin-bottom: 14px; background: var(--bg-light); display: flex; align-items: center; justify-content: center; border: 1px solid rgba(109, 94, 247, 0.08);">
+              ${hasPoster ? `
+                <img 
+                  src="${posterSrc}" 
+                  alt="${ev.title}" 
+                  style="width: 100%; height: 100%; object-fit: cover;"
+                  onerror="this.parentElement.innerHTML='<div style=\\'color:var(--primary);display:flex;flex-direction:column;align-items:center;gap:6px;font-size:0.75rem;font-weight:600;\\'><i data-lucide=\\'image\\' style=\\'width:28px;\\'></i><span>CHARUSAT Event</span></div>'; if(window.lucide) lucide.createIcons();"
+                >
+              ` : `
+                <div style="color: var(--primary); display: flex; flex-direction: column; align-items: center; gap: 6px; font-size: 0.75rem; font-weight: 600;">
+                  <i data-lucide="image" style="width: 28px; height: 28px;"></i>
+                  <span>CHARUSAT Event</span>
+                </div>
+              `}
+            </div>
+
+            <div class="event-badge-row">
+              <span class="event-badge" style="background: var(--primary-light); color: var(--primary);">${ev.type}</span>
+              <span style="font-size: 0.78rem; color: var(--text-muted);">${ev.date || ev.event_date}</span>
+            </div>
+            <h4>${ev.title}</h4>
+            <p>${ev.description}</p>
+            <div class="event-meta-info">
+              <span><i data-lucide="map-pin"></i> ${ev.venue} (${ev.city || 'Campus'})</span>
+              <span id="event-reg-count-${ev.id}"><i data-lucide="users"></i> ${ev.registrations || 0} Registered / ${ev.seats || '100'} Seats</span>
+            </div>
+            <div class="event-footer">
+              <span class="event-fee">${ev.fee}</span>
+              <button class="btn-primary" onclick="ajaxRegisterEvent(${ev.id})" style="font-size: 0.78rem; padding: 6px 14px;">Quick Register</button>
+            </div>
+          </article>
+        `;
+      }).join('');
+    }
+
+    if (window.lucide) lucide.createIcons();
+
+    if (pageIndicator) pageIndicator.textContent = `Page ${currentPage} of ${totalPages}`;
+    if (prevPageBtn) prevPageBtn.disabled = currentPage === 1;
+    if (nextPageBtn) nextPageBtn.disabled = currentPage === totalPages;
+  }
+
+  // Hook input events
+  if (searchInput) searchInput.addEventListener('input', () => { currentPage = 1; renderFilteredEvents(); });
+  if (typeFilter) typeFilter.addEventListener('change', () => { currentPage = 1; renderFilteredEvents(); });
+  if (sortSelect) sortSelect.addEventListener('change', () => { renderFilteredEvents(); });
+
+  if (prevPageBtn) {
+    prevPageBtn.addEventListener('click', () => {
+      if (currentPage > 1) {
+        currentPage--;
+        renderFilteredEvents();
+      }
+    });
+  }
+
+  if (nextPageBtn) {
+    nextPageBtn.addEventListener('click', () => {
+      currentPage++;
+      renderFilteredEvents();
+    });
+  }
+
+  // Practical 13: Asynchronous AJAX Registration without full page reload
+  window.ajaxRegisterEvent = async function (id) {
+    try {
+      const res = await fetch('api.php?action=register_event', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ event_id: id })
+      });
+      const data = await res.json();
+      if (data.status === 'success') {
+        alert(data.message);
+        // Refresh dynamic list to update registration count and state
+        if (typeof window.fetchEvents === 'function') {
+          window.fetchEvents();
+        }
+      } else {
+        alert(data.message || "Registration failed.");
+      }
+    } catch (e) {
+      alert("Error establishing connection to events API.");
+    }
+  };
+}
+
+/* ========================================================
+   7. DYNAMIC LEADERBOARD (Practical 6)
+   ======================================================== */
+async function loadLeaderboard() {
+  const target = document.getElementById('dynamic-leaderboard');
+  if (!target) return;
+
+  try {
+    const res = await fetch('students.json');
+    const students = await res.json();
+    students.sort((a, b) => b.points - a.points);
+
+    target.innerHTML = students.slice(0, 5).map(s => `
+      <li style="margin-bottom: 8px;">
+        <strong>${s.name}</strong> 
+        <span style="color: var(--primary); font-weight: 700; float: right;">${s.points} pts</span>
+      </li>
+    `).join('');
+  } catch (err) {
+    target.innerHTML = `<li style="color: var(--text-muted);">Leaderboard syncing...</li>`;
+  }
+}

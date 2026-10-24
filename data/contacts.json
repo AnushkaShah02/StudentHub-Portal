@@ -1,0 +1,30 @@
+[
+    {
+        "name": "Anushka Shah",
+        "email": "anushka.shah@student.edu",
+        "department": "Computer Engineering (CSE) Support",
+        "message": "Requesting verification guidelines for upcoming practical examinations.",
+        "submitted_at": "2026-10-24 16:30:15"
+    },
+    {
+        "name": "Shrusti Chavada",
+        "email": "shrusti@charusat.edu.in",
+        "department": "Finance and Tuition Invoices",
+        "message": "Inquiry regarding Semester 3 tuition fee digital receipt confirmation.",
+        "submitted_at": "2026-10-24 16:45:20"
+    },
+    {
+        "name": "Bhavyaa Patel",
+        "email": "bhavyaa@charusat.edu.in",
+        "department": "Technical Portal Bug Report",
+        "message": "CSS Grid overflow on mobile responsive layout in calendar module.",
+        "submitted_at": "2026-10-24 17:05:42"
+    },
+    {
+        "name": "Anushka Shah",
+        "email": "anushka.shah@student.edu",
+        "department": "Computer Engineering (CSE) Support",
+        "message": "Requesting verification guidelines for upcoming practical examinations.",
+        "submitted_at": "2026-10-24 20:00:17"
+    }
+]

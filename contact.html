@@ -14,7 +14,7 @@
     <div class="blob blob-2"></div>
   </div>
 
-  <!-- Reusable Header (Injected dynamically via script.js jQuery) -->
+  <!-- Reusable Header (Injected dynamically via script.js) -->
   <header class="global-nav"></header>
 
   <main class="main-wrapper">
@@ -63,35 +63,35 @@
         </article>
       </div>
 
-      <!-- Inbound Contact Form Card -->
+      <!-- Inbound Contact Form Card (Submits to process_contact.php) -->
       <div class="contact-form-wrapper">
         <h3 class="font-poppins" style="margin-bottom: 10px;">Send a Direct Message</h3>
         <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 25px;">Please describe your concern comprehensively. Tickets are sorted automatically.</p>
         
-        <form id="contact-form-desk" onsubmit="event.preventDefault(); alert('Message successfully sent to the department!');">
+        <form id="contact-form-desk" action="process_contact.php" method="POST">
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
             <div>
               <label style="font-size: 0.8rem; font-weight: 600; color: var(--text-main);">Full Name</label>
-              <input type="text" style="width: 100%; padding: 12px; border: 1px solid var(--lavender); border-radius: var(--radius-capsule); outline: none; margin-top: 6px;" value="Anushka Shah" required>
+              <input type="text" name="full_name" style="width: 100%; padding: 12px; border: 1px solid var(--lavender); border-radius: var(--radius-capsule); outline: none; margin-top: 6px;" value="Anushka Shah" required>
             </div>
             <div>
               <label style="font-size: 0.8rem; font-weight: 600; color: var(--text-main);">Official Email</label>
-              <input type="email" style="width: 100%; padding: 12px; border: 1px solid var(--lavender); border-radius: var(--radius-capsule); outline: none; margin-top: 6px;" value="anushka.shah@student.edu" required>
+              <input type="email" name="email" style="width: 100%; padding: 12px; border: 1px solid var(--lavender); border-radius: var(--radius-capsule); outline: none; margin-top: 6px;" value="anushka.shah@student.edu" required>
             </div>
           </div>
 
           <div style="margin-bottom: 20px;">
             <label style="font-size: 0.8rem; font-weight: 600; color: var(--text-main);">Department Classification</label>
-            <select style="width: 100%; padding: 12px; border: 1px solid var(--lavender); border-radius: var(--radius-capsule); outline: none; margin-top: 6px;">
-              <option>Computer Engineering (CSE) Support</option>
-              <option>Finance and Tuition Invoices</option>
-              <option>Technical Portal Bug Report</option>
+            <select name="department" style="width: 100%; padding: 12px; border: 1px solid var(--lavender); border-radius: var(--radius-capsule); outline: none; margin-top: 6px;">
+              <option value="Computer Engineering (CSE) Support">Computer Engineering (CSE) Support</option>
+              <option value="Finance and Tuition Invoices">Finance and Tuition Invoices</option>
+              <option value="Technical Portal Bug Report">Technical Portal Bug Report</option>
             </select>
           </div>
 
           <div style="margin-bottom: 25px;">
             <label style="font-size: 0.8rem; font-weight: 600; color: var(--text-main);">Write message</label>
-            <textarea style="width: 100%; height: 120px; border: 1px solid var(--lavender); border-radius: var(--radius-organic-2); padding: 15px; outline: none; resize: none; margin-top: 6px;" placeholder="Input inquiries here..." required></textarea>
+            <textarea name="message" style="width: 100%; height: 120px; border: 1px solid var(--lavender); border-radius: var(--radius-organic-2); padding: 15px; outline: none; resize: none; margin-top: 6px;" placeholder="Input inquiries here..." required>Requesting verification guidelines for upcoming practical examinations.</textarea>
           </div>
 
           <button type="submit" class="btn-primary" style="width: 100%; justify-content: center;">Send Message <i data-lucide="send"></i></button>
@@ -100,11 +100,10 @@
 
     </section>
 
-    <!-- Reusable Footer (Injected dynamically via script.js jQuery) -->
+    <!-- Reusable Footer (Injected dynamically via script.js) -->
     <footer class="global-footer" style="text-align: center; margin-top: 60px; color: var(--text-muted); font-size: 0.85rem;"></footer>
   </main>
 
-  <!-- jQuery, Lucide, and script.js integration -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
   <script src="script.js"></script>
